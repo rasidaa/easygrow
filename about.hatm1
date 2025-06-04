@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Easy Grow E-learning Platform</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e8f0fe;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #1e88e5;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+    .container {
+      padding: 30px;
+      text-align: center;
+    }
+    .section {
+      margin: 30px 0;
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .btn {
+      margin: 10px;
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .login {
+      background-color: #1e88e5;
+      color: white;
+    }
+    .signup {
+      background-color: #ffffff;
+      border: 2px solid #1e88e5;
+      color: #1e88e5;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Easy Grow E-learning Platform</h1>
+    <p>Learn Easily, Grow Rapidly!</p>
+  </header>
+
+  <div class="container">
+
+    <div class="section">
+      <h2>📚 Our Courses</h2>
+      <p>Explore our wide range of online courses including freelancing, digital marketing, graphics design, and more.</p>
+    </div>
+
+    <div class="section">
+      <h2>🛒 Product Sales</h2>
+      <p>We offer digital products like eBooks, course bundles, and tools to support your learning journey.</p>
+    </div>
+
+    <div class="section">
+      <button class="btn login">Login →</button>
+      <button class="btn signup">Sign Up →</button>
+    </div>
+
+  </div>
+
+</body>
+</html>
