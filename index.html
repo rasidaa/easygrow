@@ -17,6 +17,17 @@
       text-align: center;
       color: white;
     }
+    nav {
+      background-color: #1565c0;
+      padding: 10px;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
     .container {
       padding: 30px;
       text-align: center;
@@ -54,6 +65,15 @@
     <p>Learn Easily, Grow Rapidly!</p>
   </header>
 
+  <!-- 🔹 Navigation Bar -->
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+    <a href="products.html">Products</a>
+    <a href="login.html">Login</a>
+    <a href="signup.html">Sign Up</a>
+  </nav>
+
   <div class="container">
 
     <div class="section">
@@ -67,8 +87,8 @@
     </div>
 
     <div class="section">
-      <button class="btn login">Login →</button>
-      <button class="btn signup">Sign Up →</button>
+      <button class="btn login" onclick="location.href='login.html'">Login →</button>
+      <button class="btn signup" onclick="location.href='signup.html'">Sign Up →</button>
     </div>
 
   </div>
