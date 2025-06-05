@@ -1,94 +1,18 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-  <meta charset="UTF-8">
-  <title>আবেদন ফর্ম | Easy Grow</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #e6f0ff;
-      padding: 20px;
-    }
-    .form-container {
-      max-width: 500px;
-      margin: auto;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      color: #003366;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 15px;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      background-color: #0052cc;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-    button:hover {
-      background-color: #003d99;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="form-container">
-    <h2>আবেদন ফর্ম</h2>
-    <form onsubmit="submitForm(event)">
-      <label for="name">আপনার নাম</label>
-      <input type="text" id="name" name="name" required>
-
-      <label for="phone">মোবাইল নম্বর</label>
-      <input type="text" id="phone" name="phone" required>
-
-      <label for="email">ইমেইল ঠিকানা</label>
-      <input type="email" id="email" name="email" required>
-
-      <label for="address">ঠিকানা</label>
-      <input type="text" id="address" name="address" required>
-
-      <label for="role">আপনি কোন রোলে আবেদন করছেন?</label>
-      <select id="role" name="role" required>
-        <option value="">-- নির্বাচন করুন --</option>
-        <option value="Trainer">Trainer</option>
-        <option value="Team Leader">Team Leader</option>
-        <option value="Councillor">Councillor</option>
-        <option value="Teacher">Teacher</option>
-        <option value="Accountant">Accountant</option>
-      </select>
-
-      <label for="message">অতিরিক্ত তথ্য (ঐচ্ছিক)</label>
-      <textarea id="message" name="message" rows="4"></textarea>
-
-      <button type="submit">জমা দিন</button>
-    </form>
-  </div>
-
-  <script>
-    function submitForm(event) {
-      event.preventDefault();
-      alert("✅ ধন্যবাদ! আপনার আবেদন সফলভাবে জমা হয়েছে। আমরা খুব শীঘ্রই আপনার সাথে যোগাযোগ করবো ইনশাআল্লাহ।");
-      document.querySelector("form").reset();
-    }
-  </script>
-
-</body>
-</html>
+<option value="">-- নির্বাচন করুন --</option>
+<option value="Trainer">Trainer</option>
+<option value="Team Leader">Team Leader</option>
+<option value="Senior Team Leader">Senior Team Leader</option>
+<option value="Operation Manager">Operation Manager</option>
+<option value="Controller">Controller</option>
+<option value="Senior Controller">Senior Controller</option>
+<option value="Telecaller">Telecaller</option>
+<option value="Counsellor">Counsellor</option>
+<option value="Senior Counsellor">Senior Counsellor</option>
+<option value="Counselling Manager">Counselling Manager</option>
+<option value="Teacher">Teacher</option>
+<option value="Checker">Checker</option>
+<option value="Accountant">Accountant</option>
+<option value="Senior Accountant">Senior Accountant</option>
+<option value="Teacher Team Manager">Teacher Team Manager</option>
+<option value="Audit">Audit</option>
+<option value="May I Help You">May I Help You</option>
