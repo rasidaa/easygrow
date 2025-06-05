@@ -1,18 +1,123 @@
-<option value="">-- নির্বাচন করুন --</option>
-<option value="Trainer">Trainer</option>
-<option value="Team Leader">Team Leader</option>
-<option value="Senior Team Leader">Senior Team Leader</option>
-<option value="Operation Manager">Operation Manager</option>
-<option value="Controller">Controller</option>
-<option value="Senior Controller">Senior Controller</option>
-<option value="Telecaller">Telecaller</option>
-<option value="Counsellor">Counsellor</option>
-<option value="Senior Counsellor">Senior Counsellor</option>
-<option value="Counselling Manager">Counselling Manager</option>
-<option value="Teacher">Teacher</option>
-<option value="Checker">Checker</option>
-<option value="Accountant">Accountant</option>
-<option value="Senior Accountant">Senior Accountant</option>
-<option value="Teacher Team Manager">Teacher Team Manager</option>
-<option value="Audit">Audit</option>
-<option value="May I Help You">May I Help You</option>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Apply Now - Easy Grow</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f8ff;
+      padding: 20px;
+    }
+    h2 {
+      color: #004aad;
+      text-align: center;
+    }
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #004aad;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #003380;
+    }
+    #thankyou-message {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+      color: green;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Easy Grow - Apply Now</h2>
+
+  <form id="applyForm">
+    <label for="name">আপনার নাম</label>
+    <input type="text" id="name" name="name" required placeholder="আপনার পূর্ণ নাম লিখুন" />
+
+    <label for="mobile">মোবাইল নম্বর</label>
+    <input type="tel" id="mobile" name="mobile" required placeholder="০১xxxxxxxxx" pattern="[0-9]{11}" />
+
+    <label for="email">ইমেইল</label>
+    <input type="email" id="email" name="email" required placeholder="example@mail.com" />
+
+    <label for="address">ঠিকানা</label>
+    <textarea id="address" name="address" rows="3" placeholder="আপনার ঠিকানা লিখুন" required></textarea>
+
+    <label for="role">আপনি কোন রোলে আবেদন করছেন?</label>
+    <select id="role" name="role" required>
+      <option value="">-- নির্বাচন করুন --</option>
+      <option value="Trainer">Trainer</option>
+      <option value="Team Leader">Team Leader</option>
+      <option value="Senior Team Leader">Senior Team Leader</option>
+      <option value="Operation Manager">Operation Manager</option>
+      <option value="Controller">Controller</option>
+      <option value="Senior Controller">Senior Controller</option>
+      <option value="Telecaller">Telecaller</option>
+      <option value="Counsellor">Counsellor</option>
+      <option value="Senior Counsellor">Senior Counsellor</option>
+      <option value="Counselling Manager">Counselling Manager</option>
+      <option value="Teacher">Teacher</option>
+      <option value="Checker">Checker</option>
+      <option value="Accountant">Accountant</option>
+      <option value="Senior Accountant">Senior Accountant</option>
+      <option value="Teacher Team Manager">Teacher Team Manager</option>
+      <option value="Audit">Audit</option>
+      <option value="May I Help You">May I Help You</option>
+    </select>
+
+    <label for="additional">অতিরিক্ত তথ্য (ঐচ্ছিক)</label>
+    <textarea id="additional" name="additional" rows="3" placeholder="যদি কিছু বলতে চান লিখুন"></textarea>
+
+    <button type="submit">সাবমিট করুন</button>
+  </form>
+
+  <div id="thankyou-message">আপনার আবেদন সফলভাবে জমা হয়েছে। ধন্যবাদ!</div>
+
+  <script>
+    const form = document.getElementById('applyForm');
+    const thankYouMessage = document.getElementById('thankyou-message');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // এখানে আপনি চাইলে ফর্ম ডেটা সার্ভারে পাঠানোর কোড যোগ করতে পারেন।
+
+      form.style.display = 'none';
+      thankYouMessage.style.display = 'block';
+    });
+  </script>
+
+</body>
+</html>
