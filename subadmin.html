@@ -1,90 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sub Admin Vacancies</title>
+  <meta charset="UTF-8">
+  <title>Sub Admin Panel</title>
   <style>
-    body { font-family: Arial; background: #f0f8ff; margin: 0; padding: 0; }
-    header {
-      background-color: #1e88e5;
-      color: white;
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f8ff;
       padding: 20px;
+    }
+    h1 {
       text-align: center;
+      color: #003366;
     }
-    nav {
-      background-color: #1565c0;
+    .description {
       text-align: center;
-      padding: 10px;
+      margin-bottom: 30px;
     }
-    nav a {
-      color: white;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .container {
-      padding: 30px;
-      text-align: center;
-    }
-    .role-box {
+    .card {
       background: white;
-      margin: 15px auto;
-      padding: 20px;
-      width: 90%;
+      border: 1px solid #ccc;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 15px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .btn {
+    .card h2 {
+      margin-top: 0;
+      color: #002244;
+    }
+    .card p {
+      margin: 5px 0;
+    }
+    .card button {
       background-color: #007bff;
       color: white;
-      padding: 8px 18px;
       border: none;
+      padding: 8px 16px;
       border-radius: 5px;
-      text-decoration: none;
+      cursor: pointer;
       margin-top: 10px;
-      display: inline-block;
+    }
+    .card button:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Sub Admin Vacancies</h1>
-    <p>Multiple team roles available under our Sub Admin section</p>
-  </header>
+  <h1>Sub Admin Panel</h1>
+  <div class="description">
+    <p>আপনি কোন রোল এ আবেদন করতে চান? নিচের তালিকা থেকে নির্বাচন করুন।</p>
+  </div>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="courses.html">Courses</a>
-    <a href="products.html">Products</a>
-    <a href="admin.html">Admin</a>
-    <a href="subadmin.html">Sub Admin</a>
-  </nav>
+  <div class="card">
+    <h2>Trainer</h2>
+    <p>লোকেশন: Dhaka</p>
+    <p>পদের সংখ্যা: ৩</p>
+    <button>Apply Now</button>
+  </div>
 
-  <div class="container">
+  <div class="card">
+    <h2>Team Leader</h2>
+    <p>লোকেশন: Chittagong</p>
+    <p>পদের সংখ্যা: ২</p>
+    <button>Apply Now</button>
+  </div>
 
-    <div class="role-box"><h2>Trainer</h2><p>Guide and train new learners.</p><a href="#" class="btn">Apply</a></div>
-    <div class="role-box"><h2>Team Leader</h2><p>Lead a small team of trainers and learners.</p><a href="#" class="btn">Apply</a></div>
-    <div class="role-box"><h2>Senior Team Leader</h2><p>Manage multiple team leaders and reports.</p><a href="#" class="btn">Apply</a></div>
-    <div class="role-box"><h2>Operation Manager</h2><p>Oversee operations and ensure system flow.</p><a href="#" class="btn">Apply</a></div>
+  <div class="card">
+    <h2>Councillor</h2>
+    <p>লোকেশন: Rajshahi</p>
+    <p>পদের সংখ্যা: ১</p>
+    <button>Apply Now</button>
+  </div>
 
-    <div class="role-box"><h2>Controller</h2><p>Maintain rules and discipline across teams.</p><a href="#" class="btn">Apply</a></div>
-    <div class="role-box"><h2>Senior Controller</h2><p>Supervise controllers and maintain order.</p><a href="#" class="btn">Apply</a></div>
+  <div class="card">
+    <h2>Teacher</h2>
+    <p>লোকেশন: Khulna</p>
+    <p>পদের সংখ্যা: ৫</p>
+    <button>Apply Now</button>
+  </div>
 
-    <div class="role-box"><h2>Councillor</h2><p>Provide support and guidance to members.</p><a href="#" class="btn">Apply</a></div>
-    <div class="role-box"><h2>Senior Councillor</h2><p>Lead a team of councillors and oversee support structure.</p><a href="#" class="btn">Apply</a></div>
-    <div class="role-box"><h2>Counselling Manager</h2><p>Manage all councillor and support activities.</p><a href="#" class="btn">Apply</a></div>
-
-    <div class="role-box"><h2>Teacher</h2><p>Teach and mentor learners in various courses.</p><a href="#" class="btn">Apply</a></div>
-    <div class="role-box"><h2>Checker</h2><p>Review and verify learner submissions.</p><a href="#" class="btn">Apply</a></div>
-
-    <div class="role-box"><h2>Accountar</h2><p>Handle daily financial records.</p><a href="#" class="btn">Apply</a></div>
-    <div class="role-box"><h2>Senior Accountar</h2><p>Supervise accounts and financial reports.</p><a href="#" class="btn">Apply</a></div>
-
-    <div class="role-box"><h2>Teacher Team Manager</h2><p>Lead and coordinate all teachers under the platform.</p><a href="#" class="btn">Apply</a></div>
-
+  <div class="card">
+    <h2>Accountant</h2>
+    <p>লোকেশন: Sylhet</p>
+    <p>পদের সংখ্যা: ১</p>
+    <button>Apply Now</button>
   </div>
 
 </body>
-  </html>
+</html>
