@@ -4,23 +4,71 @@
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Products</title>
   <style>
-    body { background: #f2f9ff; font-family: Arial; padding: 20px; }
-    h2 { text-align: center; color: #007bff; }
-    .product { margin: 10px auto; padding: 15px; background: #fff; width: 60%; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
-    .buy { background: #007bff; color: white; padding: 10px 20px; border: none; cursor: pointer; margin-top: 10px; }
+    body { background: #f2f9ff; font-family: Arial; margin: 0; }
+    header {
+      background-color: #1e88e5;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+    nav {
+      background-color: #1565c0;
+      padding: 10px;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .product {
+      margin: 20px auto;
+      padding: 15px;
+      background: #fff;
+      width: 60%;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .buy {
+      background: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
-  <h2>Our Products</h2>
+
+  <header>
+    <h1>Our Products</h1>
+    <p>Purchase learning materials and tools</p>
+  </header>
+
+  <!-- 🔹 Navigation Bar -->
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+    <a href="products.html">Products</a>
+    <a href="login.html">Login</a>
+    <a href="signup.html">Sign Up</a>
+  </nav>
+
   <div class="product">
-    <h3>Basic Course Bundle</h3>
+    <h3>📦 Basic Course Bundle</h3>
     <p>Includes 5 beginner courses</p>
     <button class="buy">Buy Now</button>
   </div>
+
   <div class="product">
-    <h3>Premium Learning Pack</h3>
+    <h3>🚀 Premium Learning Pack</h3>
     <p>All courses + certificate</p>
     <button class="buy">Buy Now</button>
   </div>
+
 </body>
 </html>
