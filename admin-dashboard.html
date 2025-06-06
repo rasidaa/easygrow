@@ -1,23 +1,43 @@
 <script>
   function loadApplications() {
-    const tableBody = document.getElementById('appTableBody');
-    tableBody.innerHTML = '';
+    const applications = JSON.parse(localStorage.getItem('applications')) || [];
+    const table = document.getElementById('applicantTable');
 
-    for (let key in localStorage) {
-      if (key.startsWith('application_')) {
-        const data = JSON.parse(localStorage.getItem(key));
-        const row = `
-          <tr>
-            <td>${data.name}</td>
-            <td>${data.email}</td>
-            <td>${data.role}</td>
-            <td>${data.time}</td>
-          </tr>
-        `;
-        tableBody.innerHTML += row;
-      }
-    }
+    applications.forEach((app, index) => {
+      const row = table.insertRow();
+
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${app.name}</td>
+        <td>${app.email}</td>
+        <td>${app.role}</td>
+        <td>${app.time}</td>
+        <td>
+          <button onclick="approveApplication(${index})">Approve</button>
+          <button onclick="rejectApplication(${index})">Reject</button>
+        </td>
+      `;
+    });
   }
 
-  loadApplications();
+  function approveApplication(index) {
+    const applications = JSON.parse(localStorage.getItem('applications')) || [];
+    const approved = JSON.parse(localStorage.getItem('approvedApplications')) || [];
+
+    approved.push(applications[index]);
+    localStorage.setItem('approvedApplications', JSON.stringify(approved));
+
+    applications.splice(index, 1);
+    localStorage.setItem('applications', JSON.stringify(applications));
+    location.reload();
+  }
+
+  function rejectApplication(index) {
+    const applications = JSON.parse(localStorage.getItem('applications')) || [];
+    applications.splice(index, 1);
+    localStorage.setItem('applications', JSON.stringify(applications));
+    location.reload();
+  }
+
+  window.onload = loadApplications;
 </script>
