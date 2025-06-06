@@ -1,122 +1,83 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Apply Now - Easy Grow</title>
+  <meta charset="UTF-8">
+  <title>Apply Form</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f2f8ff;
-      padding: 20px;
-    }
-    h2 {
-      color: #004aad;
+      background-color: #e6f0ff;
+      padding: 30px;
       text-align: center;
+    }
+    h1 {
+      color: #003366;
     }
     form {
-      max-width: 500px;
-      margin: 0 auto;
-      background: white;
+      background-color: #fff;
       padding: 20px;
-      border-radius: 8px;
+      margin: 0 auto;
+      max-width: 400px;
+      border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-      color: #333;
-    }
-    input, select, textarea, button {
+    input, select {
       width: 100%;
       padding: 10px;
-      margin-top: 6px;
+      margin: 8px 0;
       border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-      box-sizing: border-box;
+      border-radius: 6px;
     }
     button {
-      background-color: #004aad;
+      background-color: #007bff;
       color: white;
+      padding: 10px;
       border: none;
+      border-radius: 6px;
       cursor: pointer;
-      margin-top: 20px;
-      font-weight: bold;
+      margin-top: 10px;
     }
     button:hover {
-      background-color: #003380;
-    }
-    #thankyou-message {
-      display: none;
-      text-align: center;
-      margin-top: 20px;
-      color: green;
-      font-weight: bold;
-      font-size: 18px;
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
 
-  <h2>Easy Grow - Apply Now</h2>
+  <h1 id="roleTitle">Applying for:</h1>
 
-  <form id="applyForm">
-    <label for="name">আপনার নাম</label>
-    <input type="text" id="name" name="name" required placeholder="আপনার পূর্ণ নাম লিখুন" />
-
-    <label for="mobile">মোবাইল নম্বর</label>
-    <input type="tel" id="mobile" name="mobile" required placeholder="০১xxxxxxxxx" pattern="[0-9]{11}" />
-
-    <label for="email">ইমেইল</label>
-    <input type="email" id="email" name="email" required placeholder="example@mail.com" />
-
-    <label for="address">ঠিকানা</label>
-    <textarea id="address" name="address" rows="3" placeholder="আপনার ঠিকানা লিখুন" required></textarea>
-
-    <label for="role">আপনি কোন রোলে আবেদন করছেন?</label>
-    <select id="role" name="role" required>
-      <option value="">-- নির্বাচন করুন --</option>
-      <option value="Trainer">Trainer</option>
-      <option value="Team Leader">Team Leader</option>
-      <option value="Senior Team Leader">Senior Team Leader</option>
-      <option value="Operation Manager">Operation Manager</option>
-      <option value="Controller">Controller</option>
-      <option value="Senior Controller">Senior Controller</option>
-      <option value="Telecaller">Telecaller</option>
-      <option value="Counsellor">Counsellor</option>
-      <option value="Senior Counsellor">Senior Counsellor</option>
-      <option value="Counselling Manager">Counselling Manager</option>
-      <option value="Teacher">Teacher</option>
-      <option value="Checker">Checker</option>
-      <option value="Accountant">Accountant</option>
-      <option value="Senior Accountant">Senior Accountant</option>
-      <option value="Teacher Team Manager">Teacher Team Manager</option>
-      <option value="Audit">Audit</option>
-      <option value="May I Help You">May I Help You</option>
-    </select>
-
-    <label for="additional">অতিরিক্ত তথ্য (ঐচ্ছিক)</label>
-    <textarea id="additional" name="additional" rows="3" placeholder="যদি কিছু বলতে চান লিখুন"></textarea>
-
-    <button type="submit">সাবমিট করুন</button>
+  <form onsubmit="submitForm(event)">
+    <input type="text" id="name" placeholder="আপনার নাম" required>
+    <input type="email" id="email" placeholder="ইমেইল" required>
+    <input type="text" id="phone" placeholder="ফোন নম্বর" required>
+    <input type="text" id="address" placeholder="ঠিকানা" required>
+    <button type="submit">Submit</button>
   </form>
 
-  <div id="thankyou-message">আপনার আবেদন সফলভাবে জমা হয়েছে। ধন্যবাদ!</div>
-
   <script>
-    const form = document.getElementById('applyForm');
-    const thankYouMessage = document.getElementById('thankyou-message');
+    const urlParams = new URLSearchParams(window.location.search);
+    const role = urlParams.get('role') || 'Unknown';
+    document.getElementById('roleTitle').innerText = `Applying for: ${role}`;
 
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
+    function submitForm(e) {
+      e.preventDefault();
+      const user = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        role: role,
+        time: new Date().toLocaleString()
+      };
 
-      // এখানে আপনি চাইলে ফর্ম ডেটা সার্ভারে পাঠানোর কোড যোগ করতে পারেন।
+      // Save to localStorage
+      const data = JSON.parse(localStorage.getItem("applications") || "[]");
+      data.push(user);
+      localStorage.setItem("applications", JSON.stringify(data));
 
-      form.style.display = 'none';
-      thankYouMessage.style.display = 'block';
-    });
+      alert("আবেদন সফলভাবে সাবমিট হয়েছে!");
+      window.location.href = "subadmin.html";
+    }
   </script>
 
 </body>
