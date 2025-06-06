@@ -1,43 +1,70 @@
-<script>
-  function loadApplications() {
-    const applications = JSON.parse(localStorage.getItem('applications')) || [];
-    const table = document.getElementById('applicantTable');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f1f5f9;
+      padding: 20px;
+    }
+    h1 {
+      color: #0077cc;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+    }
+    th {
+      background: #0077cc;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Submitted At</th>
+      </tr>
+    </thead>
+    <tbody id="applicationList">
+      <!-- Applicants will be loaded here -->
+    </tbody>
+  </table>
 
-    applications.forEach((app, index) => {
-      const row = table.insertRow();
+  <script>
+    const table = document.getElementById("applicationList");
+    let found = false;
 
-      row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${app.name}</td>
-        <td>${app.email}</td>
-        <td>${app.role}</td>
-        <td>${app.time}</td>
-        <td>
-          <button onclick="approveApplication(${index})">Approve</button>
-          <button onclick="rejectApplication(${index})">Reject</button>
-        </td>
-      `;
-    });
-  }
+    for (let key in localStorage) {
+      if (key.startsWith("application_")) {
+        found = true;
+        const app = JSON.parse(localStorage.getItem(key));
+        const row = `<tr>
+          <td>${app.name}</td>
+          <td>${app.email}</td>
+          <td>${app.role}</td>
+          <td>${app.time}</td>
+        </tr>`;
+        table.innerHTML += row;
+      }
+    }
 
-  function approveApplication(index) {
-    const applications = JSON.parse(localStorage.getItem('applications')) || [];
-    const approved = JSON.parse(localStorage.getItem('approvedApplications')) || [];
-
-    approved.push(applications[index]);
-    localStorage.setItem('approvedApplications', JSON.stringify(approved));
-
-    applications.splice(index, 1);
-    localStorage.setItem('applications', JSON.stringify(applications));
-    location.reload();
-  }
-
-  function rejectApplication(index) {
-    const applications = JSON.parse(localStorage.getItem('applications')) || [];
-    applications.splice(index, 1);
-    localStorage.setItem('applications', JSON.stringify(applications));
-    location.reload();
-  }
-
-  window.onload = loadApplications;
-</script>
+    if (!found) {
+      table.innerHTML = '<tr><td colspan="4">No applications found</td></tr>';
+    }
+  </script>
+</body>
+</html>
