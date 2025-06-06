@@ -7,74 +7,81 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #e8f0fe;
       margin: 0;
       padding: 0;
+      background-color: #f0f8ff;
     }
     header {
-      background-color: #1e88e5;
-      padding: 20px;
-      text-align: center;
+      background-color: #0077cc;
+      padding: 15px;
       color: white;
+      text-align: center;
     }
     nav {
-      background-color: #1565c0;
+      background-color: #005fa3;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
       padding: 10px;
-      text-align: center;
     }
     nav a {
       color: white;
-      margin: 0 15px;
       text-decoration: none;
       font-weight: bold;
     }
-    .container {
-      padding: 30px;
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      padding: 20px;
       text-align: center;
     }
-    .section {
-      margin: 30px 0;
-      background-color: white;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    .welcome {
+      font-size: 24px;
+      font-weight: bold;
     }
-    .btn {
-      margin: 10px;
-      padding: 12px 25px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .login {
-      background-color: #1e88e5;
-      color: white;
-    }
-    .signup {
-      background-color: #ffffff;
-      border: 2px solid #1e88e5;
-      color: #1e88e5;
+    .logout-btn {
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Easy Grow E-learning Platform</h1>
-    <p>Learn Easily, Grow Rapidly!</p>
+    <h1>Easy Grow</h1>
+    <div id="welcomeArea"></div>
   </header>
 
-  <!-- Navigation Bar Start -->
-<nav style="background-color:#007BFF; color:white; padding:15px; display:flex; justify-content:space-between; align-items:center;">
-  <div style="font-size:20px; font-weight:bold;">Easy Grow</div>
-  <div>
-    <a href="index.html" style="color:white; margin:0 10px; text-decoration:none;">Home</a>
-    <a href="courses.html" style="color:white; margin:0 10px; text-decoration:none;">Courses</a>
-    <a href="products.html" style="color:white; margin:0 10px; text-decoration:none;">Products</a>
-    <a href="login.html" style="color:white; margin:0 10px; text-decoration:none;">Login</a>
-    <a href="signup.html" style="color:white; margin:0 10px; text-decoration:none;">Sign Up</a>
-    <a href="admin-login.html" style="color:white; margin:0 10px; text-decoration:none;">Admin</a>
-  </div>
-</nav>
-<!-- Navigation Bar End -->
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+    <a href="products.html">Products</a>
+    <a href="login.html" id="loginLink">Login</a>
+    <a href="admin-login.html">Admin</a>
+  </nav>
+
+  <main>
+    <p class="welcome">Welcome to Easy Grow E-learning Platform</p>
+  </main>
+
+  <script>
+    const currentUserEmail = localStorage.getItem('currentUser');
+    const welcomeArea = document.getElementById('welcomeArea');
+    const loginLink = document.getElementById('loginLink');
+
+    if (currentUserEmail) {
+      welcomeArea.innerHTML = `
+        Welcome, ${currentUserEmail}
+        <button onclick="logout()" class="logout-btn">Logout</button>
+      `;
+      loginLink.style.display = 'none';
+    }
+
+    function logout() {
+      localStorage.removeItem('currentUser');
+      location.reload();
+    }
+  </script>
+
+</body>
+</html>
