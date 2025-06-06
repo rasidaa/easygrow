@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - Easy Grow</title>
+  <style>
+    body {
+      font-family: Arial;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background-color: #007BFF;
+      color: white;
+    }
+    .logout-btn {
+      float: right;
+      margin-bottom: 20px;
+      padding: 10px 15px;
+      background-color: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="logout-btn" onclick="logout()">Logout</button>
+  <h1>All Applications</h1>
+  <table id="applicationTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Applied Time</th>
+      </tr>
+    </thead>
+    <tbody id="applicationBody">
+      <!-- Data will be injected here -->
+    </tbody>
+  </table>
+
+  <script>
+    function loadApplications() {
+      const tableBody = document.getElementById("applicationBody");
+      tableBody.innerHTML = "";
+
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+
+        if (key.startsWith("application_")) {
+          const data = JSON.parse(localStorage.getItem(key));
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td>${data.name}</td>
+            <td>${data.email}</td>
+            <td>${data.role}</td>
+            <td>${data.time}</td>
+          `;
+          tableBody.appendChild(row);
+        }
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("adminLoggedIn");
+      window.location.href = "admin-login.html";
+    }
+
+    // Admin Authentication Check
+    if (localStorage.getItem('adminLoggedIn') !== 'true') {
+      alert("Please login first");
+      window.location.href = "admin-login.html";
+    } else {
+      loadApplications();
+    }
+  </script>
+
+</body>
+</html>
