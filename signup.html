@@ -1,19 +1,77 @@
-<h2>রেজিস্ট্রেশন করুন</h2>
-<form onsubmit="register(event)">
-  <input type="text" id="name" placeholder="আপনার নাম" required><br>
-  <input type="email" id="email" placeholder="ইমেইল" required><br>
-  <input type="password" id="password" placeholder="পাসওয়ার্ড" required><br>
-  <button type="submit">রেজিস্টার</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signup</title>
+  <style>
+    body {
+      background-color: #f0f8ff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .signup-box {
+      background-color: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      text-align: center;
+      color: #007bff;
+    }
+    input[type="text"], input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
 
-<script>
-  function register(e) {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const user = { email, password };
-    localStorage.setItem(email, JSON.stringify(user));
-    alert("রেজিস্ট্রেশন সফল হয়েছে!");
-    window.location.href = "login.html";
-  }
-</script>
+  <div class="signup-box">
+    <h2>Sign Up</h2>
+    <form onsubmit="signup(event)">
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+
+  <script>
+    function signup(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const user = { name, email, password };
+      localStorage.setItem(email, JSON.stringify(user));
+      alert("রেজিস্ট্রেশন সফল হয়েছে!");
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>
