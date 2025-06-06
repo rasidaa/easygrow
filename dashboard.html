@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+</head>
+<body>
+
+  <!-- ✅ ১. Welcome Message দেখানো -->
+  <h2 id="welcomeText"></h2>
+
+  <!-- ✅ ২. Logout Button -->
+  <button onclick="logout()">Logout</button>
+
+  <!-- ✅ ৩. নিচে JavaScript অংশ -->
+  <script>
+    // ✅ ইউজার লগইন না থাকলে redirect করবে
+    const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) {
+      alert("অনুগ্রহ করে আগে লগইন করুন");
+      window.location.href = "login.html";
+    }
+
+    // ✅ ইউজারের ইমেইল দেখানো
+    document.getElementById('welcomeText').innerText = "Welcome, " + currentUser;
+
+    // ✅ Logout Function
+    function logout() {
+      localStorage.removeItem('currentUser');
+      alert("আপনি লগআউট করেছেন");
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>
