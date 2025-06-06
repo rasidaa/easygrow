@@ -2,52 +2,78 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard</title>
+  <title>Dashboard - Applications</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #f0f8ff;
+      padding: 30px;
+    }
+    h1 {
       text-align: center;
-      padding: 50px;
-      background-color: #f2f9ff;
+      color: #003366;
     }
-    h2 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      color: #333;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
     }
-    button {
-      font-size: 18px;
-      padding: 10px 20px;
-      background-color: #007BFF;
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #007bff;
       color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s;
     }
-    button:hover {
-      background-color: #0056b3;
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .no-data {
+      text-align: center;
+      margin-top: 50px;
+      color: red;
     }
   </style>
 </head>
 <body>
 
-  <h2 id="welcomeText">Welcome</h2>
-  <button onclick="logout()">Logout</button>
+  <h1>আবেদনকারীদের তালিকা</h1>
+
+  <div id="appList"></div>
 
   <script>
-    const currentUser = localStorage.getItem('currentUser');
-    if (!currentUser) {
-      alert("অনুগ্রহ করে আগে লগইন করুন");
-      window.location.href = "login.html";
-    }
+    const data = JSON.parse(localStorage.getItem("applications") || "[]");
 
-    document.getElementById('welcomeText').innerText = "Welcome, " + currentUser;
-
-    function logout() {
-      localStorage.removeItem('currentUser');
-      alert("আপনি লগআউট করেছেন");
-      window.location.href = "login.html";
+    if (data.length === 0) {
+      document.getElementById("appList").innerHTML = `<p class="no-data">এখনো কেউ আবেদন করেনি।</p>`;
+    } else {
+      let table = `
+        <table>
+          <tr>
+            <th>নাম</th>
+            <th>ইমেইল</th>
+            <th>ফোন</th>
+            <th>ঠিকানা</th>
+            <th>পদবী</th>
+            <th>সময়</th>
+          </tr>
+      `;
+      data.forEach(user => {
+        table += `
+          <tr>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td>${user.phone}</td>
+            <td>${user.address}</td>
+            <td>${user.role}</td>
+            <td>${user.time}</td>
+          </tr>
+        `;
+      });
+      table += `</table>`;
+      document.getElementById("appList").innerHTML = table;
     }
   </script>
 
