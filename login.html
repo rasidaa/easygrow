@@ -1,20 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Easy Grow - লগইন</title>
   <style>
-    body { background: #e6f0ff; font-family: Arial; padding: 30px; text-align: center; }
-    input { margin: 10px; padding: 10px; width: 200px; }
-    button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+    body { font-family: sans-serif; background-color: #eef6ff; padding: 20px; }
+    form { background: #fff; padding: 20px; max-width: 400px; margin: auto; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, button { width: 100%; margin: 10px 0; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    button { background-color: #007bff; color: white; border: none; }
   </style>
 </head>
 <body>
-  <h2>Login</h2>
-  <form>
-    <input type="email" placeholder="Email" required><br>
-    <input type="password" placeholder="Password" required><br>
-    <button type="submit">Login</button>
+
+  <h2 style="text-align:center">লগইন করুন</h2>
+  <form onsubmit="login(event)">
+    <input type="email" id="loginEmail" placeholder="ইমেইল" required>
+    <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" required>
+    <button type="submit">লগইন</button>
   </form>
+
+  <script>
+    function login(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const savedUser = JSON.parse(localStorage.getItem(email));
+
+      if (savedUser && savedUser.password === password) {
+        alert(\"লগইন সফল!\");
+        window.location.href = \"index.html\"; // সফল হলে মূল পেজে বা ড্যাশবোর্ডে যাবে
+      } else {
+        alert(\"ভুল ইমেইল বা পাসওয়ার্ড\");
+      }
+    }
+  </script>
+
 </body>
 </html>
