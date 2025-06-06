@@ -6,45 +6,35 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f8ff;
-      padding: 20px;
+      background-color: #e6f2ff;
+      padding: 30px;
+      text-align: center;
     }
     h1 {
-      text-align: center;
-      color: #003366;
+      color: #004080;
     }
-    .description {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .card {
-      background: white;
+    .role-card {
+      background-color: white;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 20px;
-      margin-bottom: 15px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 15px auto;
+      max-width: 400px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .card h2 {
-      margin-top: 0;
-      color: #002244;
+    .role-card h3 {
+      margin-bottom: 10px;
     }
-    .card p {
-      margin: 5px 0;
-    }
-    .card button {
-      background-color: #007bff;
+    .role-card a button {
+      padding: 10px 20px;
+      background-color: #007BFF;
       color: white;
       border: none;
-      padding: 8px 16px;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
-      margin-top: 10px;
+      font-size: 16px;
     }
-    .card button:hover {
+    .role-card a button:hover {
       background-color: #0056b3;
     }
   </style>
@@ -52,44 +42,91 @@
 <body>
 
   <h1>Sub Admin Panel</h1>
-  <div class="description">
-    <p>আপনি কোন রোল এ আবেদন করতে চান? নিচের তালিকা থেকে নির্বাচন করুন।</p>
+
+  <div class="role-card">
+    <h3>Trainer</h3>
+    <a href="apply.html?role=Trainer"><button>Apply Now</button></a>
   </div>
 
-  <div class="card">
-    <h2>Trainer</h2>
-    <p>লোকেশন: Dhaka</p>
-    <p>পদের সংখ্যা: ৩</p>
-    <button>Apply Now</button>
+  <div class="role-card">
+    <h3>Team Leader</h3>
+    <a href="apply.html?role=Team Leader"><button>Apply Now</button></a>
   </div>
 
-  <div class="card">
-    <h2>Team Leader</h2>
-    <p>লোকেশন: Chittagong</p>
-    <p>পদের সংখ্যা: ২</p>
-    <button>Apply Now</button>
+  <div class="role-card">
+    <h3>Senior Team Leader</h3>
+    <a href="apply.html?role=Senior Team Leader"><button>Apply Now</button></a>
   </div>
 
-  <div class="card">
-    <h2>Councillor</h2>
-    <p>লোকেশন: Rajshahi</p>
-    <p>পদের সংখ্যা: ১</p>
-    <button>Apply Now</button>
+  <div class="role-card">
+    <h3>Operation Manager</h3>
+    <a href="apply.html?role=Operation Manager"><button>Apply Now</button></a>
   </div>
 
-  <div class="card">
-    <h2>Teacher</h2>
-    <p>লোকেশন: Khulna</p>
-    <p>পদের সংখ্যা: ৫</p>
-    <button>Apply Now</button>
+  <div class="role-card">
+    <h3>Controller</h3>
+    <a href="apply.html?role=Controller"><button>Apply Now</button></a>
   </div>
 
-  <div class="card">
-    <h2>Accountant</h2>
-    <p>লোকেশন: Sylhet</p>
-    <p>পদের সংখ্যা: ১</p>
-    <button>Apply Now</button>
+  <div class="role-card">
+    <h3>Senior Controller</h3>
+    <a href="apply.html?role=Senior Controller"><button>Apply Now</button></a>
+  </div>
+
+  <div class="role-card">
+    <h3>Telecaller</h3>
+    <a href="apply.html?role=Telecaller"><button>Apply Now</button></a>
+  </div>
+
+  <div class="role-card">
+    <h3>Counsellor</h3>
+    <a href="apply.html?role=Counsellor"><button>Apply Now</button></a>
+  </div>
+
+  <div class="role-card">
+    <h3>Senior Counsellor</h3>
+    <a href="apply.html?role=Senior Counsellor"><button>Apply Now</button></a>
+  </div>
+
+  <div class="role-card">
+    <h3>Counselling Manager</h3>
+    <a href="apply.html?role=Counselling Manager"><button>Apply Now</button></a>
+  </div>
+
+  <div class="role-card">
+    <h3>Teacher</h3>
+    <a href="apply.html?role=Teacher"><button>Apply Now</button></a>
+  </div>
+
+  <div class="role-card">
+    <h3>Checker</h3>
+    <a href="apply.html?role=Checker"><button>Apply Now</button></a>
+  </div>
+
+  <div class="role-card">
+    <h3>Accountant</h3>
+    <a href="apply.html?role=Accountant"><button>Apply Now</button></a>
+  </div>
+
+  <div class="role-card">
+    <h3>Senior Accountant</h3>
+    <a href="apply.html?role=Senior Accountant"><button>Apply Now</button></a>
+  </div>
+
+  <div class="role-card">
+    <h3>Teacher Team Manager</h3>
+    <a href="apply.html?role=Teacher Team Manager"><button>Apply Now</button></a>
+  </div>
+
+  <div class="role-card">
+    <h3>Audit</h3>
+    <a href="apply.html?role=Audit"><button>Apply Now</button></a>
+  </div>
+
+  <div class="role-card">
+    <h3>May I Help You</h3>
+    <a href="apply.html?role=May I Help You"><button>Apply Now</button></a>
   </div>
 
 </body>
-</html>
+</html>      
