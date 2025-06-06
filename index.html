@@ -3,45 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Easy Grow E-learning Platform</title>
+  <title>Easy Grow</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f0f8ff;
     }
+
     header {
-      background-color: #0077cc;
-      padding: 15px;
+      background-color: #007BFF;
       color: white;
+      padding: 15px 20px;
       text-align: center;
     }
+
     nav {
-      background-color: #005fa3;
+      background-color: #f1f1f1;
+      padding: 10px 20px;
       display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 10px;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
     }
+
     nav a {
-      color: white;
+      margin-right: 15px;
       text-decoration: none;
+      color: #333;
       font-weight: bold;
     }
+
     nav a:hover {
-      text-decoration: underline;
+      color: #007BFF;
     }
+
     main {
       padding: 20px;
       text-align: center;
     }
-    .welcome {
-      font-size: 24px;
-      font-weight: bold;
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
     }
-    .logout-btn {
-      margin-top: 10px;
+
+    button:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
@@ -49,37 +61,42 @@
 
   <header>
     <h1>Easy Grow</h1>
-    <div id="welcomeArea"></div>
   </header>
 
   <nav>
-    <a href="index.html">Home</a>
-    <a href="courses.html">Courses</a>
-    <a href="products.html">Products</a>
-    <a href="login.html" id="loginLink">Login</a>
-    <a href="admin-login.html">Admin</a>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="products.html">Products</a>
+      <a href="subadmin.html">Sub Admin</a>
+      <a href="admin-login.html">Admin</a>
+    </div>
+    <div id="userSection">
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="signup.html" id="signupLink">Sign Up</a>
+    </div>
   </nav>
 
   <main>
-    <p class="welcome">Welcome to Easy Grow E-learning Platform</p>
+    <h2>Welcome to Easy Grow E-learning Platform</h2>
+    <p>Your gateway to skill development and online learning.</p>
   </main>
 
   <script>
-    const currentUserEmail = localStorage.getItem('currentUser');
-    const welcomeArea = document.getElementById('welcomeArea');
-    const loginLink = document.getElementById('loginLink');
+    const userSection = document.getElementById("userSection");
+    const currentUser = localStorage.getItem("currentUser");
 
-    if (currentUserEmail) {
-      welcomeArea.innerHTML = `
-        Welcome, ${currentUserEmail}
-        <button onclick="logout()" class="logout-btn">Logout</button>
+    if (currentUser) {
+      userSection.innerHTML = `
+        <span>Welcome, ${currentUser}</span>
+        <button onclick="logout()" style="margin-left:10px;">Logout</button>
       `;
-      loginLink.style.display = 'none';
     }
 
     function logout() {
-      localStorage.removeItem('currentUser');
-      location.reload();
+      localStorage.removeItem("currentUser");
+      alert("You have been logged out.");
+      window.location.href = "index.html";
     }
   </script>
 
