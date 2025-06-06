@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login - Easy Grow</title>
+  <style>
+    body {
+      background-color: #e6f0ff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+      width: 300px;
+      text-align: center;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>🔐 Admin Login</h2>
+    <form onsubmit="adminLogin(event)">
+      <input type="email" id="adminEmail" placeholder="Admin Email" required><br>
+      <input type="password" id="adminPassword" placeholder="Password" required><br>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+    const adminCredentials = {
+      email: "admin@easygrow.com",
+      password: "admin123"
+    };
+
+    function adminLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById("adminEmail").value;
+      const password = document.getElementById("adminPassword").value;
+
+      if (email === adminCredentials.email && password === adminCredentials.password) {
+        alert("লগইন সফল!");
+        localStorage.setItem('adminLoggedIn', 'true');
+        window.location.href = "admin-dashboard.html";
+      } else {
+        alert("ভুল ইমেইল বা পাসওয়ার্ড");
+      }
+    }
+  </script>
+</body>
+</html>
