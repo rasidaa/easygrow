@@ -1,34 +1,37 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Dashboard</title>
+  <title>Admin Dashboard - Easy Grow</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f1f5f9;
+      font-family: Arial;
+      background-color: #eef2f7;
       padding: 20px;
     }
-    h1 {
-      color: #0077cc;
+    h2 {
+      text-align: center;
+      color: #2c3e50;
     }
     table {
-      width: 100%;
+      width: 90%;
+      margin: auto;
       border-collapse: collapse;
-      background-color: white;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: center;
     }
     th {
-      background-color: #0077cc;
+      background-color: #3498db;
       color: white;
     }
   </style>
 </head>
 <body>
-  <h1>Admin Dashboard</h1>
+  <h2>Admin Dashboard</h2>
   <table>
     <thead>
       <tr>
@@ -38,31 +41,28 @@
         <th>Submitted At</th>
       </tr>
     </thead>
-    <tbody id="applicationList">
-      <!-- Applicants will be loaded here -->
+    <tbody id="applicationTableBody">
+      <tr><td colspan="4">Loading...</td></tr>
     </tbody>
   </table>
 
   <script>
-    const table = document.getElementById("applicationList");
-    let found = false;
+    const tableBody = document.getElementById("applicationTableBody");
+    const applications = JSON.parse(localStorage.getItem('applications')) || [];
 
-    for (let key in localStorage) {
-      if (key.startsWith("application_")) {
-        found = true;
-        const app = JSON.parse(localStorage.getItem(key));
+    if (applications.length === 0) {
+      tableBody.innerHTML = '<tr><td colspan="4">No applications found</td></tr>';
+    } else {
+      tableBody.innerHTML = '';
+      applications.forEach(app => {
         const row = `<tr>
           <td>${app.name}</td>
           <td>${app.email}</td>
           <td>${app.role}</td>
-          <td>${app.time}</td>
+          <td>${app.submittedAt}</td>
         </tr>`;
-        table.innerHTML += row;
-      }
-    }
-
-    if (!found) {
-      table.innerHTML = '<tr><td colspan="4">No applications found</td></tr>';
+        tableBody.innerHTML += row;
+      });
     }
   </script>
 </body>
