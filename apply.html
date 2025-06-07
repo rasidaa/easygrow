@@ -1,41 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="bn">
 <head>
-  <title>Apply Now - Easy Grow</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>সাব অ্যাডমিন আবেদন</title>
   <style>
     body {
-      font-family: Arial;
-      background-color: #f2f2f2;
+      font-family: sans-serif;
+      background-color: #f1f1f1;
       padding: 20px;
     }
     form {
       background-color: #fff;
       padding: 20px;
+      border-radius: 8px;
       max-width: 400px;
-      margin: auto;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin: 0 auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     input, select, button {
       width: 100%;
-      margin-bottom: 15px;
       padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
       font-size: 16px;
     }
-    h2 {
-      text-align: center;
-      color: #2c3e50;
+    button {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
+
+  <h2 style="text-align:center;">সাব অ্যাডমিন আবেদন ফর্ম</h2>
+
   <form onsubmit="submitApplication(event)">
-    <h2>Apply Now</h2>
-    <input type="text" id="name" placeholder="Your Name" required />
-    <input type="email" id="email" placeholder="Your Email" required />
-    
+    <input type="text" id="name" placeholder="নাম" required />
+    <input type="email" id="email" placeholder="ইমেইল" required />
+    <input type="text" id="phone" placeholder="ফোন" required />
+    <input type="text" id="address" placeholder="ঠিকানা" required />
     <select id="role" required>
-      <option value="">Chose Account Type</option>
+      <option value="">পদবী নির্বাচন করুন</option>
       <option value="Trainer">Trainer</option>
       <option value="Team Leader">Team Leader</option>
       <option value="Senior Team Leader">Senior Team Leader</option>
@@ -54,32 +66,34 @@
       <option value="Audit">Audit</option>
       <option value="May I Help You">May I Help You</option>
     </select>
-    
-    <button type="submit">Submit</button>
+    <button type="submit">জমা দিন</button>
   </form>
 
   <script>
-    function submitApplication(e) {
-      e.preventDefault();
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const role = document.getElementById('role').value;
-      const time = new Date().toLocaleString();
+    function submitApplication(event) {
+      event.preventDefault();
 
-      const newApplication = {
-        name,
-        email,
-        role,
-        submittedAt: time
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const role = document.getElementById('role').value;
+      const submittedAt = new Date().toLocaleString();
+
+      const application = {
+        name, email, phone, address, role, submittedAt,
+        status: "Pending",
+        assignedId: ""
       };
 
-      let applications = JSON.parse(localStorage.getItem('applications')) || [];
-      applications.push(newApplication);
-      localStorage.setItem('applications', JSON.stringify(applications));
+      let applications = JSON.parse(localStorage.getItem("subAdminApplications")) || [];
+      applications.push(application);
+      localStorage.setItem("subAdminApplications", JSON.stringify(applications));
 
-      alert("Application submitted successfully!");
-      window.location.href = "subadmin.html";
+      alert("আবেদন সফলভাবে জমা হয়েছে!");
+      document.querySelector("form").reset();
     }
   </script>
+
 </body>
 </html>
