@@ -45,7 +45,9 @@
       const phone = document.getElementById('phone').value.trim();
       const address = document.getElementById('address').value.trim();
       const role = document.getElementById('role').value;
-      const submittedAt = new Date().toLocaleString();
+
+      // এখানে সঠিকভাবে সময় নেওয়া হয়েছে
+      const submittedAt = new Date().toLocaleString("bn-BD");
 
       const application = {
         name,
