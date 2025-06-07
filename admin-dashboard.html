@@ -1,48 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Dashboard</title>
+  <title>Admin Dashboard - Sub Admin Applications</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background: #f4f4f4;
       padding: 20px;
     }
-    h2 {
-      margin-bottom: 20px;
+    h1 {
+      text-align: center;
+      color: #333;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
+      background: #fff;
     }
     th, td {
-      border: 1px solid #999;
-      padding: 8px;
+      border: 1px solid #ccc;
+      padding: 10px;
       text-align: center;
     }
+    th {
+      background: #007bff;
+      color: white;
+    }
     button {
+      padding: 5px 10px;
       margin: 2px;
-      padding: 4px 10px;
-    }
-    .approved {
-      color: green;
-      font-weight: bold;
-    }
-    .rejected {
-      color: red;
-      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h2>Admin Dashboard - Sub Admin Applications</h2>
-  <table>
+
+  <h1>Admin Dashboard - Sub Admin Applications</h1>
+
+  <table id="applicationTable">
     <thead>
       <tr>
         <th>Name</th>
         <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
         <th>Role</th>
         <th>Submitted At</th>
         <th>Status</th>
@@ -50,58 +50,74 @@
         <th>Assigned ID</th>
       </tr>
     </thead>
-    <tbody id="applicationTableBody"></tbody>
+    <tbody>
+      <!-- Applications will be added here -->
+    </tbody>
   </table>
 
   <script>
-    function loadApplications() {
-      const tbody = document.getElementById('applicationTableBody');
-      tbody.innerHTML = "";
+    const tableBody = document.querySelector("#applicationTable tbody");
+    const applications = JSON.parse(localStorage.getItem("subAdminApplications")) || [];
 
-      const apps = JSON.parse(localStorage.getItem("subadmin_applications")) || [];
+    function generateID(prefix) {
+      const random = Math.floor(1000 + Math.random() * 9000);
+      return prefix + '-' + random;
+    }
 
-      apps.forEach((app, index) => {
-        const tr = document.createElement('tr');
+    function renderApplications() {
+      tableBody.innerHTML = "";
 
-        tr.innerHTML = `
+      if (applications.length === 0) {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td colspan="9">No applications found</td>`;
+        tableBody.appendChild(row);
+        return;
+      }
+
+      applications.forEach((app, index) => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
           <td>${app.name}</td>
           <td>${app.email}</td>
+          <td>${app.phone || 'N/A'}</td>
+          <td>${app.address || 'N/A'}</td>
           <td>${app.role}</td>
           <td>${app.time}</td>
           <td>${app.status || 'Pending'}</td>
           <td>
-            <button onclick="approve(${index})">Approve</button>
-            <button onclick="reject(${index})">Reject</button>
+            ${!app.status || app.status === 'Pending' ? `
+              <button onclick="acceptApp(${index})">Accept</button>
+              <button onclick="rejectApp(${index})">Reject</button>
+            ` : app.status}
           </td>
           <td>${app.id || ''}</td>
         `;
 
-        tbody.appendChild(tr);
+        tableBody.appendChild(row);
       });
     }
 
-    function generateID(prefix) {
-      return prefix + '-' + Math.floor(100000 + Math.random() * 900000);
+    function acceptApp(index) {
+      const rolePrefix = applications[index].role.replace(/\s+/g, '').substring(0, 3).toUpperCase();
+      applications[index].status = "Accepted";
+      applications[index].id = generateID(rolePrefix);
+      saveAndRender();
     }
 
-    function approve(index) {
-      const apps = JSON.parse(localStorage.getItem("subadmin_applications")) || [];
-      apps[index].status = "Approved";
-      if (!apps[index].id) {
-        apps[index].id = generateID("SUBADM");
-      }
-      localStorage.setItem("subadmin_applications", JSON.stringify(apps));
-      loadApplications();
+    function rejectApp(index) {
+      applications[index].status = "Rejected";
+      applications[index].id = '';
+      saveAndRender();
     }
 
-    function reject(index) {
-      const apps = JSON.parse(localStorage.getItem("subadmin_applications")) || [];
-      apps[index].status = "Rejected";
-      localStorage.setItem("subadmin_applications", JSON.stringify(apps));
-      loadApplications();
+    function saveAndRender() {
+      localStorage.setItem("subAdminApplications", JSON.stringify(applications));
+      renderApplications();
     }
 
-    loadApplications();
+    renderApplications();
   </script>
+
 </body>
 </html>
