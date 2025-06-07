@@ -1,37 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Admin Dashboard - Easy Grow</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
   <style>
     body {
-      font-family: Arial;
-      background-color: #eef2f7;
+      font-family: Arial, sans-serif;
       padding: 20px;
     }
     h2 {
-      text-align: center;
-      color: #2c3e50;
+      margin-bottom: 20px;
     }
     table {
-      width: 90%;
-      margin: auto;
+      width: 100%;
       border-collapse: collapse;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-top: 10px;
     }
     th, td {
-      padding: 12px;
-      border: 1px solid #ddd;
+      border: 1px solid #999;
+      padding: 8px;
       text-align: center;
     }
-    th {
-      background-color: #3498db;
-      color: white;
+    button {
+      margin: 2px;
+      padding: 4px 10px;
+    }
+    .approved {
+      color: green;
+      font-weight: bold;
+    }
+    .rejected {
+      color: red;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h2>Admin Dashboard</h2>
+  <h2>Admin Dashboard - Sub Admin Applications</h2>
   <table>
     <thead>
       <tr>
@@ -39,31 +45,63 @@
         <th>Email</th>
         <th>Role</th>
         <th>Submitted At</th>
+        <th>Status</th>
+        <th>Action</th>
+        <th>Assigned ID</th>
       </tr>
     </thead>
-    <tbody id="applicationTableBody">
-      <tr><td colspan="4">Loading...</td></tr>
-    </tbody>
+    <tbody id="applicationTableBody"></tbody>
   </table>
 
   <script>
-    const tableBody = document.getElementById("applicationTableBody");
-    const applications = JSON.parse(localStorage.getItem('applications')) || [];
+    function loadApplications() {
+      const tbody = document.getElementById('applicationTableBody');
+      tbody.innerHTML = "";
 
-    if (applications.length === 0) {
-      tableBody.innerHTML = '<tr><td colspan="4">No applications found</td></tr>';
-    } else {
-      tableBody.innerHTML = '';
-      applications.forEach(app => {
-        const row = `<tr>
+      const apps = JSON.parse(localStorage.getItem("subadmin_applications")) || [];
+
+      apps.forEach((app, index) => {
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
           <td>${app.name}</td>
           <td>${app.email}</td>
           <td>${app.role}</td>
-          <td>${app.submittedAt}</td>
-        </tr>`;
-        tableBody.innerHTML += row;
+          <td>${app.time}</td>
+          <td>${app.status || 'Pending'}</td>
+          <td>
+            <button onclick="approve(${index})">Approve</button>
+            <button onclick="reject(${index})">Reject</button>
+          </td>
+          <td>${app.id || ''}</td>
+        `;
+
+        tbody.appendChild(tr);
       });
     }
+
+    function generateID(prefix) {
+      return prefix + '-' + Math.floor(100000 + Math.random() * 900000);
+    }
+
+    function approve(index) {
+      const apps = JSON.parse(localStorage.getItem("subadmin_applications")) || [];
+      apps[index].status = "Approved";
+      if (!apps[index].id) {
+        apps[index].id = generateID("SUBADM");
+      }
+      localStorage.setItem("subadmin_applications", JSON.stringify(apps));
+      loadApplications();
+    }
+
+    function reject(index) {
+      const apps = JSON.parse(localStorage.getItem("subadmin_applications")) || [];
+      apps[index].status = "Rejected";
+      localStorage.setItem("subadmin_applications", JSON.stringify(apps));
+      loadApplications();
+    }
+
+    loadApplications();
   </script>
 </body>
 </html>
