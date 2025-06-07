@@ -2,50 +2,16 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>সাব অ্যাডমিন আবেদন</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #f1f1f1;
-      padding: 20px;
-    }
-    form {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 400px;
-      margin: 0 auto;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-    }
-    button {
-      background-color: #007BFF;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+  <title>সাব অ্যাডমিন আবেদন ফর্ম</title>
 </head>
 <body>
-
-  <h2 style="text-align:center;">সাব অ্যাডমিন আবেদন ফর্ম</h2>
-
+  <h2>সাব অ্যাডমিন আবেদন ফর্ম</h2>
   <form onsubmit="submitApplication(event)">
-    <input type="text" id="name" placeholder="নাম" required />
-    <input type="email" id="email" placeholder="ইমেইল" required />
-    <input type="text" id="phone" placeholder="ফোন" required />
-    <input type="text" id="address" placeholder="ঠিকানা" required />
+    <input type="text" id="name" placeholder="নাম" required /><br /><br />
+    <input type="email" id="email" placeholder="ইমেইল" required /><br /><br />
+    <input type="text" id="phone" placeholder="ফোন" required /><br /><br />
+    <input type="text" id="address" placeholder="ঠিকানা" required /><br /><br />
+    
     <select id="role" required>
       <option value="">পদবী নির্বাচন করুন</option>
       <option value="Trainer">Trainer</option>
@@ -65,7 +31,8 @@
       <option value="Teacher Team Manager">Teacher Team Manager</option>
       <option value="Audit">Audit</option>
       <option value="May I Help You">May I Help You</option>
-    </select>
+    </select><br /><br />
+
     <button type="submit">জমা দিন</button>
   </form>
 
@@ -81,7 +48,12 @@
       const submittedAt = new Date().toLocaleString();
 
       const application = {
-        name, email, phone, address, role, submittedAt,
+        name,
+        email,
+        phone,
+        address,
+        role,
+        submittedAt,
         status: "Pending",
         assignedId: ""
       };
@@ -90,10 +62,9 @@
       applications.push(application);
       localStorage.setItem("subAdminApplications", JSON.stringify(applications));
 
-      alert("আবেদন সফলভাবে জমা হয়েছে!");
+      alert("✅ আবেদন সফলভাবে জমা হয়েছে!");
       document.querySelector("form").reset();
     }
   </script>
-
 </body>
 </html>
