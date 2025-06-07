@@ -1,84 +1,85 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Apply Form</title>
+  <title>Apply Now - Easy Grow</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #e6f0ff;
-      padding: 30px;
-      text-align: center;
-    }
-    h1 {
-      color: #003366;
+      font-family: Arial;
+      background-color: #f2f2f2;
+      padding: 20px;
     }
     form {
       background-color: #fff;
       padding: 20px;
-      margin: 0 auto;
       max-width: 400px;
+      margin: auto;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    input, select {
+    input, select, button {
       width: 100%;
+      margin-bottom: 15px;
       padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      font-size: 16px;
     }
-    button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #0056b3;
+    h2 {
+      text-align: center;
+      color: #2c3e50;
     }
   </style>
 </head>
 <body>
-
-  <h1 id="roleTitle">Applying for:</h1>
-
-  <form onsubmit="submitForm(event)">
-    <input type="text" id="name" placeholder="আপনার নাম" required>
-    <input type="email" id="email" placeholder="ইমেইল" required>
-    <input type="text" id="phone" placeholder="ফোন নম্বর" required>
-    <input type="text" id="address" placeholder="ঠিকানা" required>
+  <form onsubmit="submitApplication(event)">
+    <h2>Apply Now</h2>
+    <input type="text" id="name" placeholder="Your Name" required />
+    <input type="email" id="email" placeholder="Your Email" required />
+    
+    <select id="role" required>
+      <option value="">Chose Account Type</option>
+      <option value="Trainer">Trainer</option>
+      <option value="Team Leader">Team Leader</option>
+      <option value="Senior Team Leader">Senior Team Leader</option>
+      <option value="Operation Manager">Operation Manager</option>
+      <option value="Controller">Controller</option>
+      <option value="Senior Controller">Senior Controller</option>
+      <option value="Telecaller">Telecaller</option>
+      <option value="Counsellor">Counsellor</option>
+      <option value="Senior Counsellor">Senior Counsellor</option>
+      <option value="Counselling Manager">Counselling Manager</option>
+      <option value="Teacher">Teacher</option>
+      <option value="Checker">Checker</option>
+      <option value="Accountant">Accountant</option>
+      <option value="Senior Accountant">Senior Accountant</option>
+      <option value="Teacher Team Manager">Teacher Team Manager</option>
+      <option value="Audit">Audit</option>
+      <option value="May I Help You">May I Help You</option>
+    </select>
+    
     <button type="submit">Submit</button>
   </form>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const role = urlParams.get('role') || 'Unknown';
-    document.getElementById('roleTitle').innerText = `Applying for: ${role}`;
-
-    function submitForm(e) {
+    function submitApplication(e) {
       e.preventDefault();
-      const user = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        address: document.getElementById('address').value,
-        role: role,
-        time: new Date().toLocaleString()
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const role = document.getElementById('role').value;
+      const time = new Date().toLocaleString();
+
+      const newApplication = {
+        name,
+        email,
+        role,
+        submittedAt: time
       };
 
-      // Save to localStorage
-      const data = JSON.parse(localStorage.getItem("applications") || "[]");
-      data.push(user);
-      localStorage.setItem("applications", JSON.stringify(data));
+      let applications = JSON.parse(localStorage.getItem('applications')) || [];
+      applications.push(newApplication);
+      localStorage.setItem('applications', JSON.stringify(applications));
 
-      alert("আবেদন সফলভাবে সাবমিট হয়েছে!");
+      alert("Application submitted successfully!");
       window.location.href = "subadmin.html";
     }
   </script>
-
 </body>
 </html>
