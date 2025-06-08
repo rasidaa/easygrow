@@ -1,123 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="bn">
 <head>
+  <meta charset="UTF-8" />
   <title>Admin Dashboard - Sub Admin Applications</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
     table {
-      width: 100%;
       border-collapse: collapse;
-      background: #fff;
+      width: 100%;
     }
     th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: center;
+      padding: 8px;
+      border: 1px solid #999;
+      text-align: left;
     }
     th {
-      background: #007bff;
-      color: white;
+      background-color: #f2f2f2;
     }
     button {
-      padding: 5px 10px;
       margin: 2px;
     }
   </style>
 </head>
 <body>
-
-  <h1>Admin Dashboard - Sub Admin Applications</h1>
-
-  <table id="applicationTable">
+  <h2>Admin Dashboard - Sub Admin Applications</h2>
+  <table>
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Address</th>
-        <th>Role</th>
-        <th>Submitted At</th>
-        <th>Status</th>
-        <th>Action</th>
-        <th>Assigned ID</th>
+        <th>Name</th><th>Email</th><th>Phone</th><th>Address</th>
+        <th>Role</th><th>Submitted At</th><th>Status</th><th>Action</th><th>Assigned ID</th>
       </tr>
     </thead>
-    <tbody>
-      <!-- Applications will be added here -->
-    </tbody>
+    <tbody id="applicationTableBody"></tbody>
   </table>
 
   <script>
-    const tableBody = document.querySelector("#applicationTable tbody");
-    const applications = JSON.parse(localStorage.getItem("subAdminApplications")) || [];
+    function generateSubAdminId(role) {
+      const prefix = {
+        "Trainer": "TRA",
+        "Team Leader": "TL",
+        "Senior Team Leader": "STL",
+        "Operation Manager": "OM",
+        "Controller": "CON",
+        "Senior Controller": "SCON",
+        "Telecaller": "TEL",
+        "Counsellor": "COU",
+        "Senior Counsellor": "SCOU",
+        "Counselling Manager": "CM",
+        "Teacher": "TCH",
+        "Checker": "CHK",
+        "Accountant": "ACC",
+        "Senior Accountant": "SACC",
+        "Teacher Team Manager": "TTM",
+        "Audit": "AUD",
+        "May I Help You": "MIH"
+      }[role] || "SUB";
 
-    function generateID(prefix) {
       const random = Math.floor(1000 + Math.random() * 9000);
-      return prefix + '-' + random;
+      return `${prefix}-${random}`;
     }
 
-    function renderApplications() {
+    function loadApplications() {
+      const tableBody = document.getElementById("applicationTableBody");
       tableBody.innerHTML = "";
 
+      const applications = JSON.parse(localStorage.getItem("subAdminApplications")) || [];
+
       if (applications.length === 0) {
-        const row = document.createElement("tr");
-        row.innerHTML = `<td colspan="9">No applications found</td>`;
-        tableBody.appendChild(row);
+        tableBody.innerHTML = `<tr><td colspan="9">No applications found</td></tr>`;
         return;
       }
 
       applications.forEach((app, index) => {
         const row = document.createElement("tr");
-
         row.innerHTML = `
           <td>${app.name}</td>
           <td>${app.email}</td>
-          <td>${app.phone || 'N/A'}</td>
-          <td>${app.address || 'N/A'}</td>
+          <td>${app.phone}</td>
+          <td>${app.address}</td>
           <td>${app.role}</td>
-          <td>${app.time}</td>
-          <td>${app.status || 'Pending'}</td>
+          <td>${app.submittedAt || 'N/A'}</td>
+          <td>${app.status}</td>
           <td>
-            ${!app.status || app.status === 'Pending' ? `
-              <button onclick="acceptApp(${index})">Accept</button>
-              <button onclick="rejectApp(${index})">Reject</button>
+            ${app.status === "Pending" ? `
+              <button onclick="acceptApplication(${index})">Accept</button>
+              <button onclick="rejectApplication(${index})">Reject</button>
             ` : app.status}
           </td>
-          <td>${app.id || ''}</td>
+          <td>${app.assignedId || ''}</td>
         `;
-
         tableBody.appendChild(row);
       });
     }
 
-    function acceptApp(index) {
-      const rolePrefix = applications[index].role.replace(/\s+/g, '').substring(0, 3).toUpperCase();
-      applications[index].status = "Accepted";
-      applications[index].id = generateID(rolePrefix);
-      saveAndRender();
-    }
+    function acceptApplication(index) {
+      const applications = JSON.parse(localStorage.getItem("subAdminApplications")) || [];
+      const app = applications[index];
 
-    function rejectApp(index) {
-      applications[index].status = "Rejected";
-      applications[index].id = '';
-      saveAndRender();
-    }
+      app.status = "Accepted";
+      app.assignedId = generateSubAdminId(app.role);
 
-    function saveAndRender() {
       localStorage.setItem("subAdminApplications", JSON.stringify(applications));
-      renderApplications();
+      loadApplications();
     }
 
-    renderApplications();
-  </script>
+    function rejectApplication(index) {
+      const applications = JSON.parse(localStorage.getItem("subAdminApplications")) || [];
+      applications[index].status = "Rejected";
+      localStorage.setItem("subAdminApplications", JSON.stringify(applications));
+      loadApplications();
+    }
 
+    window.onload = loadApplications;
+  </script>
 </body>
 </html>
