@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <title>স্টুডেন্ট আবেদন ফর্ম</title>
+</head>
+<body>
+  <h2>স্টুডেন্ট আবেদন ফর্ম</h2>
+  <form onsubmit="submitStudentApplication(event)">
+    <input type="text" id="name" placeholder="নাম" required /><br /><br />
+    <input type="email" id="email" placeholder="ইমেইল" required /><br /><br />
+    <input type="text" id="phone" placeholder="ফোন নম্বর" required /><br /><br />
+    <input type="text" id="address" placeholder="ঠিকানা" required /><br /><br />
+
+    <button type="submit">জমা দিন</button>
+  </form>
+
+  <script>
+    function submitStudentApplication(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const submittedAt = new Date().toLocaleString();
+
+      const studentApplication = {
+        name,
+        email,
+        phone,
+        address,
+        submittedAt,
+        status: "Pending",
+        assignedId: ""
+      };
+
+      let applications = JSON.parse(localStorage.getItem("studentApplications")) || [];
+      applications.push(studentApplication);
+      localStorage.setItem("studentApplications", JSON.stringify(applications));
+
+      alert("✅ আবেদন সফলভাবে জমা হয়েছে!");
+      document.querySelector("form").reset();
+    }
+  </script>
+</body>
+</html>
