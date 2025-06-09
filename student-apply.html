@@ -1,47 +1,102 @@
-DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>স্টুডেন্ট আবেদন ফর্ম</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Application Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      font-weight: bold;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-  <h2>স্টুডেন্ট আবেদন ফর্ম</h2>
-  <form onsubmit="submitStudentApplication(event)">
-    <input type="text" id="name" placeholder="নাম" required /><br /><br />
-    <input type="email" id="email" placeholder="ইমেইল" required /><br /><br />
-    <input type="text" id="phone" placeholder="ফোন নম্বর" required /><br /><br />
-    <input type="text" id="address" placeholder="ঠিকানা" required /><br /><br />
+
+  <h1>স্টুডেন্ট আবেদন ফর্ম</h1>
+  <form id="studentForm">
+    <label for="name">নাম</label>
+    <input type="text" id="name" required />
+
+    <label for="email">ইমেইল</label>
+    <input type="email" id="email" required />
+
+    <label for="phone">ফোন নম্বর</label>
+    <input type="text" id="phone" required />
+
+    <label for="address">ঠিকানা</label>
+    <input type="text" id="address" required />
+
+    <label for="course">কোর্স</label>
+    <select id="course" required>
+      <option value="">-- একটি কোর্স নির্বাচন করুন --</option>
+      <option value="Web Design">Web Design</option>
+      <option value="Spoken English">Spoken English</option>
+      <option value="Digital Marketing">Digital Marketing</option>
+      <option value="Graphic Design">Graphic Design</option>
+    </select>
 
     <button type="submit">জমা দিন</button>
   </form>
 
   <script>
-    function submitStudentApplication(event) {
-      event.preventDefault();
+    document.getElementById('studentForm').addEventListener('submit', function (e) {
+      e.preventDefault();
 
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
       const address = document.getElementById('address').value.trim();
+      const course = document.getElementById('course').value.trim();
       const submittedAt = new Date().toLocaleString();
 
-      const studentApplication = {
+      const studentData = {
         name,
         email,
         phone,
         address,
+        course,
         submittedAt,
-        status: "Pending",
-        assignedId: ""
+        status: "Pending"
       };
 
-      let applications = JSON.parse(localStorage.getItem("studentApplications")) || [];
-      applications.push(studentApplication);
-      localStorage.setItem("studentApplications", JSON.stringify(applications));
+      // Load existing applications
+      const existing = JSON.parse(localStorage.getItem('studentApplications')) || [];
 
-      alert("✅ আবেদন সফলভাবে জমা হয়েছে!");
-      document.querySelector("form").reset();
-    }
+      // Add new one
+      existing.push(studentData);
+
+      // Save back to storage
+      localStorage.setItem('studentApplications', JSON.stringify(existing));
+
+      // Optional: Show alert and reset form
+      alert("আপনার আবেদন সফলভাবে জমা হয়েছে!");
+      document.getElementById('studentForm').reset();
+    });
   </script>
+
 </body>
-</html
+</html>
