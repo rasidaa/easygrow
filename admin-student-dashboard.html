@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Student Applications</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    h2 {
+      color: #0077cc;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+    th {
+      background: #f2f2f2;
+    }
+    button {
+      padding: 5px 10px;
+      margin: 2px;
+      cursor: pointer;
+    }
+    .accepted {
+      color: green;
+    }
+    .rejected {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h2>Admin Dashboard - Student Applications</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Course</th>
+        <th>Submitted At</th>
+        <th>Status</th>
+        <th>Action</th>
+        <th>Assigned ID</th>
+      </tr>
+    </thead>
+    <tbody id="studentTableBody"></tbody>
+  </table>
+
+  <script>
+    function generateStudentId() {
+      const random = Math.floor(1000 + Math.random() * 9000);
+      return `STU-${random}`;
+    }
+
+    function loadStudentApplications() {
+      const tableBody = document.getElementById("studentTableBody");
+      const applications = JSON.parse(localStorage.getItem("studentApplications")) || [];
+
+      tableBody.innerHTML = "";
+
+      if (applications.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="9">No student applications found.</td></tr>`;
+        return;
+      }
+
+      applications.forEach((app, index) => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td>${app.name}</td>
+          <td>${app.email}</td>
+          <td>${app.phone}</td>
+          <td>${app.address}</td>
+          <td>${app.course}</td>
+          <td>${app.submittedAt || 'N/A'}</td>
+          <td class="${app.status === 'Accepted' ? 'accepted' : app.status === 'Rejected' ? 'rejected' : ''}">${app.status}</td>
+          <td>
+            ${app.status === "Pending" ? `
+              <button onclick="acceptStudent(${index})">Accept</button>
+              <button onclick="rejectStudent(${index})">Reject</button>
+            ` : ""}
+          </td>
+          <td>${app.assignedId || ''}</td>
+        `;
+
+        tableBody.appendChild(row);
+      });
+    }
+
+    function acceptStudent(index) {
+      const applications = JSON.parse(localStorage.getItem("studentApplications")) || [];
+      applications[index].status = "Accepted";
+      applications[index].assignedId = generateStudentId();
+
+      localStorage.setItem("studentApplications", JSON.stringify(applications));
+      loadStudentApplications();
+    }
+
+    function rejectStudent(index) {
+      const applications = JSON.parse(localStorage.getItem("studentApplications")) || [];
+      applications[index].status = "Rejected";
+
+      localStorage.setItem("studentApplications", JSON.stringify(applications));
+      loadStudentApplications();
+    }
+
+    window.onload = loadStudentApplications;
+  </script>
+</body>
+</html>
