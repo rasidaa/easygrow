@@ -1,119 +1,105 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Student Dashboard</title>
   <style>
-    table {
+    body { font-family: Arial; padding: 20px; }
+    h2 { margin-top: 30px; }
+    table, th, td {
+      border: 1px solid #999;
       border-collapse: collapse;
-      width: 100%;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ccc;
       padding: 8px;
-      text-align: left;
     }
-    th {
-      background-color: #f2f2f2;
-    }
-    h2 {
-      margin-top: 30px;
+    table { width: 100%; }
+    input, button {
+      padding: 6px;
+      margin: 5px 0;
     }
   </style>
 </head>
 <body>
-  <h1>Student Dashboard</h1>  <h2>Passbook</h2>
+  <h2>Passbook</h2>
   <table>
     <thead>
-      <tr>
-        <th>Student ID</th>
-        <th>Description</th>
-        <th>Amount</th>
-        <th>Date</th>
-      </tr>
+      <tr><th>Student ID</th><th>Description</th><th>Amount</th><th>Date</th></tr>
     </thead>
-    <tbody id="passbookBody">
-      <tr><td colspan="4">No passbook records found.</td></tr>
-    </tbody>
-  </table>  <h2>Withdrawal Request (UDR)</h2>
-  <form id="withdrawalForm">
-    <label>Student ID: <input type="text" id="studentId" required></label><br><br>
-    <label>Amount: <input type="number" id="withdrawAmount" required></label><br><br>
-    <button type="submit">Submit Request</button>
-  </form>  <h2>Withdrawal Requests</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Student ID</th>
-        <th>Amount</th>
-        <th>Status</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody id="withdrawalBody">
-      <tr><td colspan="4">No withdrawal requests found.</td></tr>
-    </tbody>
-  </table>  <script>
-    const passbookData = JSON.parse(localStorage.getItem('studentPassbook')) || [];
-    const withdrawalData = JSON.parse(localStorage.getItem('studentWithdrawals')) || [];
+    <tbody id="passbookBody"></tbody>
+  </table>
 
+  <h2>Withdrawal Request (UDR)</h2>
+  <label>Student ID: <input type="text" id="studentId" /></label><br>
+  <label>Amount: <input type="number" id="withdrawAmount" /></label><br>
+  <button onclick="submitWithdrawal()">Submit Request</button>
+
+  <h2>Withdrawal Requests</h2>
+  <table>
+    <thead>
+      <tr><th>Student ID</th><th>Amount</th><th>Status</th><th>Date</th></tr>
+    </thead>
+    <tbody id="withdrawalTableBody"></tbody>
+  </table>
+
+  <script>
     function loadPassbook() {
-      const body = document.getElementById("passbookBody");
-      body.innerHTML = "";
-      if (passbookData.length === 0) {
-        body.innerHTML = '<tr><td colspan="4">No passbook records found.</td></tr>';
+      const id = document.getElementById("studentId").value;
+      const passbook = JSON.parse(localStorage.getItem("studentPassbook")) || [];
+      const tbody = document.getElementById("passbookBody");
+      tbody.innerHTML = "";
+
+      const filtered = passbook.filter(entry => entry.studentId === id);
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4">No passbook records found.</td></tr>`;
         return;
       }
-      passbookData.forEach(entry => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${entry.studentId}</td>
-          <td>${entry.description}</td>
-          <td>${entry.amount}</td>
-          <td>${entry.date}</td>
-        `;
-        body.appendChild(row);
+
+      filtered.forEach(p => {
+        const row = `<tr><td>${p.studentId}</td><td>${p.description}</td><td>${p.amount}</td><td>${p.date}</td></tr>`;
+        tbody.innerHTML += row;
       });
     }
 
     function loadWithdrawals() {
-      const body = document.getElementById("withdrawalBody");
-      body.innerHTML = "";
-      if (withdrawalData.length === 0) {
-        body.innerHTML = '<tr><td colspan="4">No withdrawal requests found.</td></tr>';
+      const id = document.getElementById("studentId").value;
+      const withdrawals = JSON.parse(localStorage.getItem("withdrawalRequests")) || [];
+      const tbody = document.getElementById("withdrawalTableBody");
+      tbody.innerHTML = "";
+
+      const filtered = withdrawals.filter(w => w.studentId === id);
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4">No withdrawal requests found.</td></tr>`;
         return;
       }
-      withdrawalData.forEach(entry => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${entry.studentId}</td>
-          <td>${entry.amount}</td>
-          <td>${entry.status}</td>
-          <td>${entry.date}</td>
-        `;
-        body.appendChild(row);
+
+      filtered.forEach(w => {
+        const row = `<tr><td>${w.studentId}</td><td>${w.amount}</td><td>${w.status}</td><td>${w.date}</td></tr>`;
+        tbody.innerHTML += row;
       });
     }
 
-    document.getElementById("withdrawalForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const studentId = document.getElementById("studentId").value;
+    function submitWithdrawal() {
+      const id = document.getElementById("studentId").value;
       const amount = document.getElementById("withdrawAmount").value;
+
+      if (!id || !amount) return alert("Please enter both Student ID and amount");
+
       const newRequest = {
-        studentId,
+        studentId: id,
         amount,
         status: "Pending",
         date: new Date().toLocaleString()
       };
-      withdrawalData.push(newRequest);
-      localStorage.setItem("studentWithdrawals", JSON.stringify(withdrawalData));
-      loadWithdrawals();
-      this.reset();
-    });
 
-    window.onload = () => {
-      loadPassbook();
+      const data = JSON.parse(localStorage.getItem("withdrawalRequests")) || [];
+      data.push(newRequest);
+      localStorage.setItem("withdrawalRequests", JSON.stringify(data));
       loadWithdrawals();
     }
-  </script></body>
+
+    document.getElementById("studentId").addEventListener("input", () => {
+      loadPassbook();
+      loadWithdrawals();
+    });
+  </script>
+</body>
 </html>
