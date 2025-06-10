@@ -1,45 +1,36 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>স্টুডেন্ট আবেদন ফর্ম</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f9f9f9;
-      padding: 30px;
-      max-width: 600px;
-      margin: auto;
+      font-family: Arial, sans-serif;
+      padding: 20px;
     }
     h2 {
-      text-align: center;
-      color: #333;
+      color: #0a4e9b;
     }
     label {
       display: block;
-      margin: 12px 0 5px;
+      margin-top: 10px;
+      margin-bottom: 5px;
     }
     input, select, button {
+      padding: 8px;
       width: 100%;
-      padding: 10px;
-      margin-bottom: 12px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      max-width: 400px;
+      box-sizing: border-box;
+      margin-bottom: 15px;
     }
     button {
-      background-color: #007bff;
+      background-color: #0a4e9b;
       color: white;
       border: none;
-      font-weight: bold;
       cursor: pointer;
     }
     button:hover {
-      background-color: #0056b3;
-    }
-    .success {
-      color: green;
-      text-align: center;
-      margin-top: 10px;
+      background-color: #083b73;
     }
   </style>
 </head>
@@ -53,7 +44,7 @@
     <input type="email" id="email" required />
 
     <label for="phone">ফোন নম্বর</label>
-    <input type="tel" id="phone" required />
+    <input type="text" id="phone" required />
 
     <label for="address">ঠিকানা</label>
     <input type="text" id="address" required />
@@ -61,25 +52,25 @@
     <label for="course">কোর্স নির্বাচন করুন</label>
     <select id="course" required>
       <option value="Web Development">Web Development</option>
+      <option value="Graphic Design">Graphic Design</option>
+      <option value="Digital Marketing">Digital Marketing</option>
     </select>
 
     <button type="submit">জমা দিন</button>
   </form>
 
-  <div class="success" id="successMessage" style="display: none;">আবেদন সফলভাবে জমা হয়েছে!</div>
-
   <script>
-    document.getElementById("studentForm").addEventListener("submit", function (e) {
+    document.getElementById("studentForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const address = document.getElementById("address").value.trim();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const address = document.getElementById("address").value;
       const course = document.getElementById("course").value;
       const submittedAt = new Date().toLocaleString("bn-BD");
 
-      const application = {
+      const studentApp = {
         name,
         email,
         phone,
@@ -89,16 +80,12 @@
         status: "Pending"
       };
 
-      const existingApps = JSON.parse(localStorage.getItem("studentApplications")) || [];
-      existingApps.push(application);
-      localStorage.setItem("studentApplications", JSON.stringify(existingApps));
+      const applications = JSON.parse(localStorage.getItem("studentApplications")) || [];
+      applications.push(studentApp);
+      localStorage.setItem("studentApplications", JSON.stringify(applications));
 
+      alert("আবেদন সফলভাবে জমা হয়েছে!");
       document.getElementById("studentForm").reset();
-      document.getElementById("successMessage").style.display = "block";
-
-      setTimeout(() => {
-        document.getElementById("successMessage").style.display = "none";
-      }, 3000);
     });
   </script>
 </body>
