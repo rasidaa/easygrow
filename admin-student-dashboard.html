@@ -1,61 +1,149 @@
-<!-- শুধু Script অংশ Replace করুন বা Add করুন নিচের মত -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard - Student Applications</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    h2 { margin-top: 30px; }
+    table, th, td {
+      border: 1px solid #999;
+      border-collapse: collapse;
+      padding: 8px;
+    }
+    table { width: 100%; }
+    button {
+      padding: 6px;
+      margin: 2px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Student Applications</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Course</th>
+        <th>Submitted At</th><th>Status</th><th>Action</th><th>Assigned ID</th>
+      </tr>
+    </thead>
+    <tbody id="applicationTableBody"></tbody>
+  </table>
 
-<script>
-  function loadStudentDashboard() {
-    const withdrawalTable = document.getElementById("withdrawalTableBody");
-    withdrawalTable.innerHTML = "";
+  <h2>Withdrawal Requests</h2>
+  <table>
+    <thead>
+      <tr><th>Student ID</th><th>Amount</th><th>Status</th><th>Date</th><th>Action</th></tr>
+    </thead>
+    <tbody id="withdrawalTableBody"></tbody>
+  </table>
 
-    const requests = JSON.parse(localStorage.getItem("withdrawalRequests")) || [];
-
-    if (requests.length === 0) {
-      withdrawalTable.innerHTML = `<tr><td colspan="4">No withdrawal requests found.</td></tr>`;
-      return;
+  <script>
+    function generateStudentId(course) {
+      const prefix = course.replace(/\s+/g, '').toUpperCase().slice(0, 3);
+      const random = Math.floor(1000 + Math.random() * 9000);
+      return `${prefix}-STU-${random}`;
     }
 
-    requests.forEach((req, index) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${req.studentId}</td>
-        <td>${req.amount}</td>
-        <td>${req.status}</td>
-        <td>${req.date}</td>
-        <td>
-          ${req.status === "Pending" ? `
-            <button onclick="approveRequest(${index})">Approve</button>
-            <button onclick="rejectRequest(${index})">Reject</button>
-          ` : ""}
-        </td>
-      `;
-      withdrawalTable.appendChild(row);
-    });
-  }
+    function loadApplications() {
+      const apps = JSON.parse(localStorage.getItem("studentApplications")) || [];
+      const tbody = document.getElementById("applicationTableBody");
+      tbody.innerHTML = "";
 
-  function approveRequest(index) {
-    const requests = JSON.parse(localStorage.getItem("withdrawalRequests")) || [];
-    const passbook = JSON.parse(localStorage.getItem("passbookRecords")) || [];
+      if (apps.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9">No student applications found.</td></tr>`;
+        return;
+      }
 
-    const req = requests[index];
-    req.status = "Approved";
+      apps.forEach((app, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${app.name}</td>
+          <td>${app.email}</td>
+          <td>${app.phone}</td>
+          <td>${app.address}</td>
+          <td>${app.course}</td>
+          <td>${app.submittedAt}</td>
+          <td>${app.status}</td>
+          <td>
+            ${app.status === "Pending" ? `
+              <button onclick="acceptApplication(${index})">Accept</button>
+              <button onclick="rejectApplication(${index})">Reject</button>
+            ` : app.status}
+          </td>
+          <td>${app.assignedId || ''}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
 
-    // Passbook Entry for Withdrawal
-    passbook.push({
-      studentId: req.studentId,
-      description: "Withdrawal Approved",
-      amount: `-${req.amount}`,
-      date: new Date().toLocaleString("bn-BD")
-    });
+    function acceptApplication(index) {
+      const apps = JSON.parse(localStorage.getItem("studentApplications")) || [];
+      const app = apps[index];
 
-    localStorage.setItem("withdrawalRequests", JSON.stringify(requests));
-    localStorage.setItem("passbookRecords", JSON.stringify(passbook));
-    loadStudentDashboard();
-  }
+      app.status = "Accepted";
+      app.assignedId = generateStudentId(app.course);
 
-  function rejectRequest(index) {
-    const requests = JSON.parse(localStorage.getItem("withdrawalRequests")) || [];
-    requests[index].status = "Rejected";
-    localStorage.setItem("withdrawalRequests", JSON.stringify(requests));
-    loadStudentDashboard();
-  }
+      localStorage.setItem("studentApplications", JSON.stringify(apps));
 
-  window.onload = loadStudentDashboard;
-</script>
+      // Add to passbook
+      const passbook = JSON.parse(localStorage.getItem("studentPassbook")) || [];
+      passbook.push({
+        studentId: app.assignedId,
+        description: "Joining Bonus",
+        amount: 100,
+        date: new Date().toLocaleString()
+      });
+      localStorage.setItem("studentPassbook", JSON.stringify(passbook));
+
+      loadApplications();
+    }
+
+    function rejectApplication(index) {
+      const apps = JSON.parse(localStorage.getItem("studentApplications")) || [];
+      apps[index].status = "Rejected";
+      localStorage.setItem("studentApplications", JSON.stringify(apps));
+      loadApplications();
+    }
+
+    function loadWithdrawals() {
+      const withdrawals = JSON.parse(localStorage.getItem("withdrawalRequests")) || [];
+      const tbody = document.getElementById("withdrawalTableBody");
+      tbody.innerHTML = "";
+
+      if (withdrawals.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5">No withdrawal requests found.</td></tr>`;
+        return;
+      }
+
+      withdrawals.forEach((w, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${w.studentId}</td>
+          <td>${w.amount}</td>
+          <td>${w.status}</td>
+          <td>${w.date}</td>
+          <td>
+            ${w.status === "Pending" ? `
+              <button onclick="approveWithdrawal(${index})">Approve</button>
+            ` : "Done"}
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function approveWithdrawal(index) {
+      const withdrawals = JSON.parse(localStorage.getItem("withdrawalRequests")) || [];
+      withdrawals[index].status = "Approved";
+      localStorage.setItem("withdrawalRequests", JSON.stringify(withdrawals));
+      loadWithdrawals();
+    }
+
+    window.onload = () => {
+      loadApplications();
+      loadWithdrawals();
+    };
+  </script>
+</body>
+</html>
