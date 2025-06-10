@@ -1,81 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Admin Dashboard - Student Applications</title>
   <style>
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    button { padding: 4px 10px; margin: 2px; }
-    .approved { background-color: #d4edda; }
-    .rejected { background-color: #f8d7da; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; }
+    th { background-color: #f0f0f0; }
+    button { margin: 2px; }
+    h3 { margin-top: 40px; }
   </style>
 </head>
 <body>
-  <h3 style="color:#0077cc;">Admin Dashboard - Student Applications</h3>
+  <h2>Admin Dashboard - Student Applications</h2>
   <table>
     <thead>
       <tr>
-        <th>Name</th><th>Email</th><th>Phone</th><th>Address</th>
-        <th>Course</th><th>Submitted At</th><th>Status</th>
-        <th>Action</th><th>Assigned ID</th>
+        <th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Course</th>
+        <th>Submitted At</th><th>Status</th><th>Action</th><th>Assigned ID</th>
       </tr>
     </thead>
-    <tbody id="applicationList"></tbody>
+    <tbody id="studentTableBody"></tbody>
+  </table>
+
+  <h3>Passbook</h3>
+  <table>
+    <thead>
+      <tr><th>Student ID</th><th>Description</th><th>Amount</th><th>Date</th></tr>
+    </thead>
+    <tbody id="passbookBody"></tbody>
+  </table>
+
+  <h3>Withdrawal Requests (UDR)</h3>
+  <table>
+    <thead>
+      <tr><th>Student ID</th><th>Amount</th><th>Status</th><th>Date</th></tr>
+    </thead>
+    <tbody id="withdrawalBody"></tbody>
   </table>
 
   <script>
-    const list = document.getElementById('applicationList');
-    const applications = JSON.parse(localStorage.getItem('studentApplications') || '[]');
-
-    applications.forEach((app, index) => {
-      const row = document.createElement('tr');
-
-      row.innerHTML = `
-        <td>${app.name}</td>
-        <td>${app.email}</td>
-        <td>${app.phone}</td>
-        <td>${app.address}</td>
-        <td>${app.course || 'N/A'}</td>
-        <td>${app.submittedAt}</td>
-        <td>${app.status}</td>
-        <td>
-          ${app.status === "Pending" ? `
-            <button onclick="accept(${index})">Accept</button>
-            <button onclick="reject(${index})">Reject</button>` : ''}
-        </td>
-        <td>${app.id || ''}</td>
-      `;
-
-      if (app.status === "Approved") row.classList.add("approved");
-      if (app.status === "Rejected") row.classList.add("rejected");
-
-      list.appendChild(row);
-    });
-
-    function generateID() {
-      return 'STU' + Math.floor(100000 + Math.random() * 900000);
+    function generateStudentId(course) {
+      const prefix = course.substring(0, 3).toUpperCase();
+      const random = Math.floor(1000 + Math.random() * 9000);
+      return `${prefix}-STU-${random}`;
     }
 
-    function updateApplication(index, status) {
-      const apps = JSON.parse(localStorage.getItem('studentApplications') || '[]');
-      apps[index].status = status;
+    function loadStudentApplications() {
+      const students = JSON.parse(localStorage.getItem("studentApplications")) || [];
+      const tableBody = document.getElementById("studentTableBody");
+      tableBody.innerHTML = "";
 
-      if (status === "Approved") {
-        apps[index].id = generateID();
+      if (students.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="9">No student applications found.</td></tr>`;
+        return;
       }
 
-      localStorage.setItem('studentApplications', JSON.stringify(apps));
-      location.reload();
+      students.forEach((app, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${app.name}</td>
+          <td>${app.email}</td>
+          <td>${app.phone}</td>
+          <td>${app.address}</td>
+          <td>${app.course}</td>
+          <td>${app.submittedAt}</td>
+          <td>${app.status}</td>
+          <td>
+            ${app.status === "Pending" ? `
+              <button onclick="acceptStudent(${index})">Accept</button>
+              <button onclick="rejectStudent(${index})">Reject</button>
+            ` : app.status}
+          </td>
+          <td>${app.studentId || ""}</td>
+        `;
+        tableBody.appendChild(row);
+      });
     }
 
-    function accept(index) {
-      updateApplication(index, "Approved");
+    function acceptStudent(index) {
+      const students = JSON.parse(localStorage.getItem("studentApplications")) || [];
+      const app = students[index];
+      app.status = "Accepted";
+      app.studentId = generateStudentId(app.course);
+      localStorage.setItem("studentApplications", JSON.stringify(students));
+      loadStudentApplications();
     }
 
-    function reject(index) {
-      updateApplication(index, "Rejected");
+    function rejectStudent(index) {
+      const students = JSON.parse(localStorage.getItem("studentApplications")) || [];
+      students[index].status = "Rejected";
+      localStorage.setItem("studentApplications", JSON.stringify(students));
+      loadStudentApplications();
     }
+
+    function loadPassbook() {
+      const passbook = JSON.parse(localStorage.getItem("studentPassbook")) || [];
+      const body = document.getElementById("passbookBody");
+      body.innerHTML = "";
+
+      if (passbook.length === 0) {
+        body.innerHTML = `<tr><td colspan="4">No passbook records found.</td></tr>`;
+        return;
+      }
+
+      passbook.forEach(entry => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${entry.studentId}</td>
+          <td>${entry.description}</td>
+          <td>${entry.amount}</td>
+          <td>${entry.date}</td>
+        `;
+        body.appendChild(row);
+      });
+    }
+
+    function loadWithdrawals() {
+      const udr = JSON.parse(localStorage.getItem("studentWithdrawals")) || [];
+      const body = document.getElementById("withdrawalBody");
+      body.innerHTML = "";
+
+      if (udr.length === 0) {
+        body.innerHTML = `<tr><td colspan="4">No withdrawal requests found.</td></tr>`;
+        return;
+      }
+
+      udr.forEach(entry => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${entry.studentId}</td>
+          <td>${entry.amount}</td>
+          <td>${entry.status}</td>
+          <td>${entry.date}</td>
+        `;
+        body.appendChild(row);
+      });
+    }
+
+    window.onload = function () {
+      loadStudentApplications();
+      loadPassbook();
+      loadWithdrawals();
+    };
   </script>
 </body>
 </html>
