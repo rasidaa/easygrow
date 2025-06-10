@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Dashboard</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    h2 {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Student Dashboard</h1>  <h2>Passbook</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Student ID</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody id="passbookBody">
+      <tr><td colspan="4">No passbook records found.</td></tr>
+    </tbody>
+  </table>  <h2>Withdrawal Request (UDR)</h2>
+  <form id="withdrawalForm">
+    <label>Student ID: <input type="text" id="studentId" required></label><br><br>
+    <label>Amount: <input type="number" id="withdrawAmount" required></label><br><br>
+    <button type="submit">Submit Request</button>
+  </form>  <h2>Withdrawal Requests</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Student ID</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody id="withdrawalBody">
+      <tr><td colspan="4">No withdrawal requests found.</td></tr>
+    </tbody>
+  </table>  <script>
+    const passbookData = JSON.parse(localStorage.getItem('studentPassbook')) || [];
+    const withdrawalData = JSON.parse(localStorage.getItem('studentWithdrawals')) || [];
+
+    function loadPassbook() {
+      const body = document.getElementById("passbookBody");
+      body.innerHTML = "";
+      if (passbookData.length === 0) {
+        body.innerHTML = '<tr><td colspan="4">No passbook records found.</td></tr>';
+        return;
+      }
+      passbookData.forEach(entry => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${entry.studentId}</td>
+          <td>${entry.description}</td>
+          <td>${entry.amount}</td>
+          <td>${entry.date}</td>
+        `;
+        body.appendChild(row);
+      });
+    }
+
+    function loadWithdrawals() {
+      const body = document.getElementById("withdrawalBody");
+      body.innerHTML = "";
+      if (withdrawalData.length === 0) {
+        body.innerHTML = '<tr><td colspan="4">No withdrawal requests found.</td></tr>';
+        return;
+      }
+      withdrawalData.forEach(entry => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${entry.studentId}</td>
+          <td>${entry.amount}</td>
+          <td>${entry.status}</td>
+          <td>${entry.date}</td>
+        `;
+        body.appendChild(row);
+      });
+    }
+
+    document.getElementById("withdrawalForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const studentId = document.getElementById("studentId").value;
+      const amount = document.getElementById("withdrawAmount").value;
+      const newRequest = {
+        studentId,
+        amount,
+        status: "Pending",
+        date: new Date().toLocaleString()
+      };
+      withdrawalData.push(newRequest);
+      localStorage.setItem("studentWithdrawals", JSON.stringify(withdrawalData));
+      loadWithdrawals();
+      this.reset();
+    });
+
+    window.onload = () => {
+      loadPassbook();
+      loadWithdrawals();
+    }
+  </script></body>
+</html>
