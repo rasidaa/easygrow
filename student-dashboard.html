@@ -1,46 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Student Dashboard</title>
+  <title>EasyGrow - Student Dashboard</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    h2 { margin-top: 30px; }
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f5faff; }
+    h2 { margin-top: 30px; color: #004080; }
     table, th, td {
-      border: 1px solid #999;
+      border: 1px solid #ccc;
       border-collapse: collapse;
       padding: 8px;
     }
-    table { width: 100%; }
+    table { width: 100%; margin-top: 10px; background: #fff; }
     input, button {
-      padding: 6px;
+      padding: 8px;
       margin: 5px 0;
     }
+    label { display: block; margin-top: 10px; }
   </style>
 </head>
 <body>
-  <h2>Passbook</h2>
+  <h1>Student Dashboard</h1>  <h2>Passbook</h2>
+  <label>Student ID: <input type="text" id="studentId" /></label>
   <table>
     <thead>
       <tr><th>Student ID</th><th>Description</th><th>Amount</th><th>Date</th></tr>
     </thead>
     <tbody id="passbookBody"></tbody>
-  </table>
-
-  <h2>Withdrawal Request (UDR)</h2>
-  <label>Student ID: <input type="text" id="studentId" /></label><br>
-  <label>Amount: <input type="number" id="withdrawAmount" /></label><br>
-  <button onclick="submitWithdrawal()">Submit Request</button>
-
-  <h2>Withdrawal Requests</h2>
+  </table>  <h2>Withdrawal Request (UDR)</h2>
+  <label>Amount: <input type="number" id="withdrawAmount" /></label>
+  <button onclick="submitWithdrawal()">Submit Request</button>  <h2>Withdrawal Requests</h2>
   <table>
     <thead>
       <tr><th>Student ID</th><th>Amount</th><th>Status</th><th>Date</th></tr>
     </thead>
     <tbody id="withdrawalTableBody"></tbody>
-  </table>
-
-  <script>
+  </table>  <script>
     function loadPassbook() {
       const id = document.getElementById("studentId").value;
       const passbook = JSON.parse(localStorage.getItem("studentPassbook")) || [];
@@ -100,6 +94,5 @@
       loadPassbook();
       loadWithdrawals();
     });
-  </script>
-</body>
+  </script></body>
 </html>
