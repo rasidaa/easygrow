@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Admin Dashboard - Student Applications</title>
+  <meta charset="UTF-8">
+  <title>Admin - Student Dashboard</title>
   <style>
     body { font-family: Arial; padding: 20px; }
     h2 { margin-top: 30px; }
@@ -11,139 +10,118 @@
       border-collapse: collapse;
       padding: 8px;
     }
-    table { width: 100%; }
-    button {
+    table { width: 100%; margin-top: 10px; }
+    input, button, select {
       padding: 6px;
-      margin: 2px;
+      margin: 5px 0;
     }
+    .highlight { background-color: #f0f8ff; }
   </style>
 </head>
 <body>
   <h2>Student Applications</h2>
   <table>
     <thead>
-      <tr>
-        <th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Course</th>
-        <th>Submitted At</th><th>Status</th><th>Action</th><th>Assigned ID</th>
-      </tr>
+      <tr><th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Course</th><th>Submitted At</th><th>Status</th><th>Action</th><th>Assigned ID</th></tr>
     </thead>
-    <tbody id="applicationTableBody"></tbody>
-  </table>
-
-  <h2>Withdrawal Requests</h2>
+    <tbody id="applicationTable"></tbody>
+  </table>  <h2>Add Income to Student Passbook</h2>
+  <label>Student ID: <input type="text" id="incomeStudentId" /></label><br>
+  <label>Description: <input type="text" id="incomeDescription" /></label><br>
+  <label>Amount: <input type="number" id="incomeAmount" /></label><br>
+  <button onclick="addIncome()">Add Income</button>  <h2>Withdrawal Requests</h2>
   <table>
     <thead>
       <tr><th>Student ID</th><th>Amount</th><th>Status</th><th>Date</th><th>Action</th></tr>
     </thead>
-    <tbody id="withdrawalTableBody"></tbody>
-  </table>
-
-  <script>
-    function generateStudentId(course) {
-      const prefix = course.replace(/\s+/g, '').toUpperCase().slice(0, 3);
-      const random = Math.floor(1000 + Math.random() * 9000);
-      return `${prefix}-STU-${random}`;
-    }
-
+    <tbody id="withdrawalRequests"></tbody>
+  </table>  <script>
     function loadApplications() {
-      const apps = JSON.parse(localStorage.getItem("studentApplications")) || [];
-      const tbody = document.getElementById("applicationTableBody");
-      tbody.innerHTML = "";
+      const applications = JSON.parse(localStorage.getItem("studentApplications")) || [];
+      const table = document.getElementById("applicationTable");
+      table.innerHTML = "";
 
-      if (apps.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9">No student applications found.</td></tr>`;
-        return;
-      }
-
-      apps.forEach((app, index) => {
+      applications.forEach((app, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${app.name}</td>
           <td>${app.email}</td>
           <td>${app.phone}</td>
           <td>${app.address}</td>
-          <td>${app.course}</td>
+          <td>${app.course || ""}</td>
           <td>${app.submittedAt}</td>
-          <td>${app.status}</td>
+          <td>${app.status || "Pending"}</td>
           <td>
-            ${app.status === "Pending" ? `
-              <button onclick="acceptApplication(${index})">Accept</button>
-              <button onclick="rejectApplication(${index})">Reject</button>
-            ` : app.status}
+            <button onclick="updateStatus(${index}, 'Accepted')">Accept</button>
+            <button onclick="updateStatus(${index}, 'Rejected')">Reject</button>
           </td>
-          <td>${app.assignedId || ''}</td>
+          <td>${app.assignedId || ""}</td>
         `;
-        tbody.appendChild(row);
+        table.appendChild(row);
       });
     }
 
-    function acceptApplication(index) {
+    function updateStatus(index, status) {
       const apps = JSON.parse(localStorage.getItem("studentApplications")) || [];
-      const app = apps[index];
-
-      app.status = "Accepted";
-      app.assignedId = generateStudentId(app.course);
-
+      apps[index].status = status;
+      if (status === "Accepted" && !apps[index].assignedId) {
+        const prefix = (apps[index].course === "Web Development") ? "WEB" : "GEN";
+        const randomId = prefix + "-STU-" + Math.floor(Math.random() * 10000);
+        apps[index].assignedId = randomId;
+      }
       localStorage.setItem("studentApplications", JSON.stringify(apps));
-
-      // Add to passbook
-      const passbook = JSON.parse(localStorage.getItem("studentPassbook")) || [];
-      passbook.push({
-        studentId: app.assignedId,
-        description: "Joining Bonus",
-        amount: 100,
-        date: new Date().toLocaleString()
-      });
-      localStorage.setItem("studentPassbook", JSON.stringify(passbook));
-
       loadApplications();
     }
 
-    function rejectApplication(index) {
-      const apps = JSON.parse(localStorage.getItem("studentApplications")) || [];
-      apps[index].status = "Rejected";
-      localStorage.setItem("studentApplications", JSON.stringify(apps));
-      loadApplications();
+    function addIncome() {
+      const id = document.getElementById("incomeStudentId").value;
+      const desc = document.getElementById("incomeDescription").value;
+      const amt = document.getElementById("incomeAmount").value;
+      if (!id || !desc || !amt) return alert("Fill all fields");
+      const income = { studentId: id, description: desc, amount: amt, date: new Date().toLocaleString() };
+      const all = JSON.parse(localStorage.getItem("studentPassbook")) || [];
+      all.push(income);
+      localStorage.setItem("studentPassbook", JSON.stringify(all));
+      alert("Income added to passbook");
     }
 
     function loadWithdrawals() {
-      const withdrawals = JSON.parse(localStorage.getItem("withdrawalRequests")) || [];
-      const tbody = document.getElementById("withdrawalTableBody");
-      tbody.innerHTML = "";
+      const data = JSON.parse(localStorage.getItem("withdrawalRequests")) || [];
+      const table = document.getElementById("withdrawalRequests");
+      table.innerHTML = "";
 
-      if (withdrawals.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5">No withdrawal requests found.</td></tr>`;
-        return;
-      }
-
-      withdrawals.forEach((w, index) => {
+      data.forEach((req, idx) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td>${w.studentId}</td>
-          <td>${w.amount}</td>
-          <td>${w.status}</td>
-          <td>${w.date}</td>
+          <td>${req.studentId}</td>
+          <td>${req.amount}</td>
+          <td>${req.status}</td>
+          <td>${req.date}</td>
           <td>
-            ${w.status === "Pending" ? `
-              <button onclick="approveWithdrawal(${index})">Approve</button>
-            ` : "Done"}
+            ${req.status === "Pending" ? `
+              <button onclick="approveWithdraw(${idx})">Approve</button>
+              <button onclick="rejectWithdraw(${idx})">Reject</button>` : req.status}
           </td>
         `;
-        tbody.appendChild(row);
+        table.appendChild(row);
       });
     }
 
-    function approveWithdrawal(index) {
-      const withdrawals = JSON.parse(localStorage.getItem("withdrawalRequests")) || [];
-      withdrawals[index].status = "Approved";
-      localStorage.setItem("withdrawalRequests", JSON.stringify(withdrawals));
+    function approveWithdraw(i) {
+      const data = JSON.parse(localStorage.getItem("withdrawalRequests")) || [];
+      data[i].status = "Approved";
+      localStorage.setItem("withdrawalRequests", JSON.stringify(data));
       loadWithdrawals();
     }
 
-    window.onload = () => {
-      loadApplications();
+    function rejectWithdraw(i) {
+      const data = JSON.parse(localStorage.getItem("withdrawalRequests")) || [];
+      data[i].status = "Rejected";
+      localStorage.setItem("withdrawalRequests", JSON.stringify(data));
       loadWithdrawals();
-    };
-  </script>
-</body>
+    }
+
+    loadApplications();
+    loadWithdrawals();
+  </script></body>
 </html>
